@@ -8,8 +8,9 @@ public class Island {
     public Island(int rowsCount, int columnsCount) {
         this.columnsCount = columnsCount;
         this.rowsCount = rowsCount;
+        locations = new Location[rowsCount][columnsCount];
     }
 
-    public Location[][] locations = new Location[rowsCount][columnsCount];
+    public Location[][] locations;
 
 }
