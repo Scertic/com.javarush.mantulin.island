@@ -9,7 +9,9 @@ import com.javarush.mantulin.island.entity.creature.animal.predator.Wolf;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Location {
 
@@ -63,7 +65,34 @@ public class Location {
         System.out.println(location.addCreature(c2));
         System.out.println(location.addCreature(c3));
         System.out.println(location.addCreature(horse));
-        System.out.println(location.creatures);
-        c1.eat(horse);
+        location.addCreature(new Wolf(location));
+        for (int i = 0; i < 100; i++) {
+            System.out.println(location.creatures);
+            for (Creature creature : new HashSet<>(location.creatures.keySet())) {
+                if (creature instanceof Animal animal) {
+                    Creature creatureToEat = animal.findCreatureToEat();
+                    animal.eat(creatureToEat);
+                }
+            }
+
+        }
+
     }
+
+    public Set<Creature> getCreatures() {
+        return Set.copyOf(creatures.keySet());
+    }
+
+    public boolean removeCreature(Creature creature) {
+        if (creatures.containsKey(creature)) {
+            if (creatures.get(creature) != 1) {
+                creatures.put(creature, creatures.get(creature)-1);
+            } else {
+                creatures.remove(creature);
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

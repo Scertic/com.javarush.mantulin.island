@@ -8,7 +8,8 @@ import com.javarush.mantulin.island.entity.creature.animal.predator.Predator;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
 import com.javarush.mantulin.island.util.Direction;
 
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Абстрактный класс для описания поведения и состояния животного по умолчанию.
@@ -19,7 +20,6 @@ public abstract class Animal extends Creature {
     // СЫТОСТЬ satiety = ? вес
     // ВЕС ЖИВОТНОГО
     // СКОРОСТЬ ПЕРЕМЕЩЕНИЯ
-    boolean isAlive = true;
 
     double weight;
     int satiety;
@@ -30,6 +30,10 @@ public abstract class Animal extends Creature {
 
 
     public void eat(Creature creature) {
+        if (creature == null) {
+            //Поменять характеристики
+            return;
+        }
         if (this instanceof Herbivore) {
             if (creature.getClass() == Plant.class) {
                 //Убавить у травы "здоровье" на необъодимое количество для насышения животного
@@ -55,6 +59,28 @@ public abstract class Animal extends Creature {
 
     }
 
+    /**
+     * Метод поиска создания для еды.
+     * @return - создание или null, если совпадения не найдены
+     */
+    public Creature findCreatureToEat() {
+        Set<Creature> creaturesNearby = location.getCreatures();
+        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.chanceMap.get(this.getClass());
+        if (classIntegerMap == null) {
+            return null;
+        }
+        Set<Class<? extends Creature>> myFavoriteCreature = new HashSet<>(classIntegerMap.keySet());
+        if (myFavoriteCreature.isEmpty()) {
+            return null;
+        }
+        for (Creature creature1 : creaturesNearby) {
+            if(myFavoriteCreature.contains(creature1.getClass())) {
+                return creature1;
+            }
+        }
+        return null;
+    }
+
     void move(Direction direction) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
     }
@@ -67,7 +93,7 @@ public abstract class Animal extends Creature {
     void die() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         System.out.println(this.getClass().getSimpleName() + " dies");
-        isAlive = false;
+        location.removeCreature(this);
     }
 
     void decreaseWeight(){
@@ -77,4 +103,5 @@ public abstract class Animal extends Creature {
         Integer chance = Settings.chanceMap.get(this.getClass()).get(creature.getClass());
         return chance;
     }
+
 }
