@@ -8,8 +8,8 @@ import com.javarush.mantulin.island.entity.creature.animal.predator.Predator;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
 import com.javarush.mantulin.island.util.Direction;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Абстрактный класс для описания поведения и состояния животного по умолчанию.
@@ -38,7 +38,7 @@ public abstract class Animal extends Creature {
             if (creature.getClass() == Plant.class) {
                 //Убавить у травы "здоровье" на необъодимое количество для насышения животного
                 //либо до 0 если "здоровья" травы не хватает
-
+                System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
                 //увеличить сытость текущего животного в соответсвии с количеством съеденного
             } //иначе убавить сытость и вес ? текущего создания
         } else if (this instanceof Predator) {
@@ -64,15 +64,17 @@ public abstract class Animal extends Creature {
      * @return - создание или null, если совпадения не найдены
      */
     public Creature findCreatureToEat() {
-        Set<Creature> creaturesNearby = location.getCreatures();
+        Set<Creature> creaturesNearby = location.getCreaturesOnLocation();
         Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.chanceMap.get(this.getClass());
         if (classIntegerMap == null) {
             return null;
         }
-        Set<Class<? extends Creature>> myFavoriteCreature = new HashSet<>(classIntegerMap.keySet());
+        List<Class<? extends Creature>> myFavoriteCreature = new ArrayList<>(classIntegerMap.keySet());
+
         if (myFavoriteCreature.isEmpty()) {
             return null;
         }
+        Collections.shuffle(myFavoriteCreature);
         for (Creature creature1 : creaturesNearby) {
             if(myFavoriteCreature.contains(creature1.getClass())) {
                 return creature1;
@@ -85,9 +87,17 @@ public abstract class Animal extends Creature {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
     }
 
-    Creature reproduce() {
+    public Creature reproduce() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        return null;
+        try {
+            long count = location.getCreaturesOnLocation().stream().filter(x -> x.getClass() == this.getClass()).count()-1;
+            if (count < 1) {
+                return (Creature) this.getClass().getConstructor(location.getClass()).newInstance(location);
+            }
+            return null;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     void die() {

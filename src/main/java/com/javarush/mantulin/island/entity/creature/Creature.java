@@ -8,12 +8,15 @@ import java.util.Objects;
  * Класс для определения верхушки иерархии.
  */
 public abstract class Creature {
+
+    static int uniqueId = 0;
     String name;
     protected Location location;
 
     public Creature(Location location) {
+        uniqueId++;
         this.location = location;
-        this.name = this.getClass().getSimpleName();
+        this.name = this.getClass().getSimpleName()+uniqueId;
     }
 
     @Override

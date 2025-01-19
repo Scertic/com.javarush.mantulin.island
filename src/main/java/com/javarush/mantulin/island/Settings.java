@@ -24,13 +24,21 @@ public class Settings {
             Wolf.class, new Double[]{50.0, 30.0, 3.0, 8.0},
             Fox.class, new Double[]{8.0, 30.0, 2.0, 2.0},
             Horse.class, new Double[]{400.0, 20.0, 4.0, 60.0},
+            Mouse.class, new Double[]{0.05, 500.0, 1.0, 0.01},
             Plant.class, new Double[]{1.0, 200.0, 0.0, 0.0}
     );
 
     public final static Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> chanceMap = Map.of(
-            Wolf.class, Map.of(Wolf.class, 0,
-                    Fox.class, 0,
-                    Horse.class, 10)
+            Wolf.class, Map.of(
+//                    Fox.class, 0,
+                    Horse.class, 10,
+                    Mouse.class, 80),
+            Mouse.class, Map.of(
+                    Plant.class, 100
+            ),
+            Horse.class, Map.of(
+                    Plant.class, 100
+            )
     );
 
 }
