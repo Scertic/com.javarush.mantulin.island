@@ -39,6 +39,7 @@ public class Settings {
         icoMap.put(Duck.class, "\uD83E\uDD86");
         icoMap.put(Mouse.class, "\uD83D\uDC01");
         icoMap.put(Caterpillar.class, "\uD83D\uDC1B");
+        icoMap.put(Plant.class, "\uD83C\uDF3F");
     }
 
     static {

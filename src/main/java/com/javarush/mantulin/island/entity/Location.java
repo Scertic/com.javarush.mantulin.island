@@ -10,6 +10,7 @@ import com.javarush.mantulin.island.entity.creature.animal.predator.Eagle;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Fox;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Wolf;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
+import com.javarush.mantulin.island.util.AnimalFactory;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -55,33 +56,46 @@ public class Location {
         return max != null ? max : 0.0;
     }
 
-
+    public Location() {
+        AnimalFactory factory = new AnimalFactory();
+        List<Creature> creatureList = new ArrayList<>(15);
+        for (int i = 0; i < 10; i++) {
+            creatureList.add(factory.createHerbivore());
+        }
+        for (int i = 0; i < 5; i++) {
+            creatureList.add(factory.createPredator());
+        }
+        Collections.shuffle(creatureList);
+        creaturesOnLocation.addAll(creatureList);
+    }
 
     // ЛОКАЦИЮ ТОЖЕ НУЖНО ПРАВИЛЬНО СОЗДАТЬ -
     // ИНИЦИАЛИЗИРОВАВ ЕЕ НА СТАРТЕ КАКИМ-ТО КОЛ-ВОМ ЖИВОТНЫХ И РАСТЕНИЙ
 
     public static void main(String[] args) {
         Location location = new Location();
-        Wolf c1 = new Wolf();
-        Animal c2 = new Fox();
-        Plant c3 = new Plant();
-        Animal horse = new Horse();
-        System.out.println(location.addCreature(c1));
-        System.out.println(location.addCreature(c2));
-        System.out.println(location.addCreature(c3));
-        System.out.println(location.addCreature(horse));
-        System.out.println(location.addCreature(horse));
-        location.addCreature(new Wolf());
-        location.addCreature(new Horse());
-        location.addCreature(new Horse());
-        location.addCreature(new Mouse());
-        location.addCreature(new Mouse());
-        location.addCreature(new Mouse());
-        location.addCreature(new Eagle());
-        location.addCreature(new Rabbit());
-        location.addCreature(new Rabbit());
-        for (int i = 0; i < 100; i++) {
-            System.out.println(location.creaturesOnLocation);
+//        Wolf c1 = new Wolf();
+//        Animal c2 = new Fox();
+//        Plant c3 = new Plant();
+//        Animal horse = new Horse();
+//        System.out.println(location.addCreature(c1));
+//        System.out.println(location.addCreature(c2));
+//        System.out.println(location.addCreature(c3));
+//        System.out.println(location.addCreature(horse));
+//        System.out.println(location.addCreature(horse));
+//        location.addCreature(new Wolf());
+//        location.addCreature(new Horse());
+//        location.addCreature(new Horse());
+//        location.addCreature(new Mouse());
+//        location.addCreature(new Mouse());
+//        location.addCreature(new Mouse());
+//        location.addCreature(new Eagle());
+//        location.addCreature(new Rabbit());
+//        location.addCreature(new Rabbit());
+        for (int i = 0; i < 10000; i++) {
+//            System.out.println(location.creaturesOnLocation);
+            Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
+            System.out.println(collect);
             for (Creature creature : location.creaturesOnLocation) {
                 if (creature instanceof Animal animal) {
                     //еда
@@ -104,9 +118,10 @@ public class Location {
                 }
                 location.addCreature(new Plant());
             }
+            if (collect.keySet().size() == 1)
+                break;
         }
-        System.out.println(location.creaturesOnLocation);
-        Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> x.getClass().getSimpleName(), Collectors.counting()));
+        Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
         System.out.println(collect);
     }
 

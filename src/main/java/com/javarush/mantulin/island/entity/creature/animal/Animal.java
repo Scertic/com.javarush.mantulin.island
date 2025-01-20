@@ -91,7 +91,7 @@ public abstract class Animal extends Creature {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         try {
             decreaseSatiety();
-            if (satiety < 70) {
+            if (satiety < 80) {
                 return null;
             }
             return this.getClass().getConstructor().newInstance();
@@ -103,14 +103,13 @@ public abstract class Animal extends Creature {
 
     void die() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        System.out.println(this.getClass().getSimpleName() + " dies");
         isAlive = false;
     }
 
     void decreaseSatiety() {
         this.satiety = this.satiety - (int) (weight / Settings.maxNumbersOfCreatures.get(this.getClass())[3]);
         if (satiety < 0) {
-            this.isAlive = false;
+            this.die();
             //System.out.println(this.getClass().getSimpleName() + " умер от голода");
         }
     }
