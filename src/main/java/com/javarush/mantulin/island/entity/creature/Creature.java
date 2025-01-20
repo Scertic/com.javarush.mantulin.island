@@ -1,5 +1,6 @@
 package com.javarush.mantulin.island.entity.creature;
 
+import com.javarush.mantulin.island.Settings;
 import com.javarush.mantulin.island.entity.Location;
 
 import java.util.Objects;
@@ -9,12 +10,15 @@ import java.util.Objects;
  */
 public abstract class Creature {
 
-    static int uniqueId = 0;
-    String name;
+    private static int uniqueId = 0;
+    private final String name;
+    private String ico;
+
 
     public Creature() {
         uniqueId++;
         this.name = this.getClass().getSimpleName()+uniqueId;
+        this.ico = Settings.icoMap.get(this.getClass());
     }
 
     @Override
@@ -28,5 +32,10 @@ public abstract class Creature {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return ico;
     }
 }

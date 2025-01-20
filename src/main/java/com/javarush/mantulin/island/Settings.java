@@ -22,6 +22,24 @@ public class Settings {
      * 3 - Сколько киллограммов пищи нужно животному до полного насыщения
      */
     public final static Map<Class<? extends Creature>, Double[]> maxNumbersOfCreatures = new HashMap<>();
+    public final static Map<Class<? extends  Creature>, String> icoMap = new HashMap<>();
+    static {
+        icoMap.put(Wolf.class, "\uD83D\uDC3A");
+        icoMap.put(Buffalo.class, "\uD83D\uDC03");
+        icoMap.put(Bear.class, "\uD83D\uDC3B");
+        icoMap.put(Horse.class, "\uD83D\uDC0E");
+        icoMap.put(Deer.class, "\uD83E\uDD8C");
+        icoMap.put(Boar.class, "\uD83D\uDC17");
+        icoMap.put(Sheep.class, "\uD83D\uDC11");
+        icoMap.put(Goat.class, "\uD83D\uDC10");
+        icoMap.put(Boa.class, "\uD83D\uDC0D");
+        icoMap.put(Fox.class, "\uD83E\uDD8A");
+        icoMap.put(Eagle.class, "\uD83E\uDD85");
+        icoMap.put(Rabbit.class, "\uD83D\uDC07");
+        icoMap.put(Duck.class, "\uD83E\uDD86");
+        icoMap.put(Mouse.class, "\uD83D\uDC01");
+        icoMap.put(Caterpillar.class, "\uD83D\uDC1B");
+    }
 
     static {
         maxNumbersOfCreatures.put(Wolf.class, new Double[]{50.0, 30.0, 3.0, 8.0});
