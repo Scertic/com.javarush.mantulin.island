@@ -11,11 +11,9 @@ public abstract class Creature {
 
     static int uniqueId = 0;
     String name;
-    protected Location location;
 
-    public Creature(Location location) {
+    public Creature() {
         uniqueId++;
-        this.location = location;
         this.name = this.getClass().getSimpleName()+uniqueId;
     }
 
@@ -24,11 +22,11 @@ public abstract class Creature {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Creature creature = (Creature) o;
-        return Objects.equals(name, creature.name) && Objects.equals(location, creature.location);
+        return Objects.equals(name, creature.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, location);
+        return Objects.hash(name);
     }
 }

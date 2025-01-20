@@ -5,7 +5,7 @@ import com.javarush.mantulin.island.entity.creature.Creature;
 
 public class Plant extends Creature {
     public Plant(Location location) {
-        super(location);
+        super();
     }
 
     // РОСТ РАСТЕНИЙ

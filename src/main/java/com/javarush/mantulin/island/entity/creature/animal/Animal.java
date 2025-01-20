@@ -22,23 +22,39 @@ public abstract class Animal extends Creature {
     // СКОРОСТЬ ПЕРЕМЕЩЕНИЯ
 
     double weight;
-    int satiety;
+    public int satiety = 100;
+    private double forFullSatiety;
+    public boolean isAlive = true;
 
-    public Animal(Location location) {
-        super(location);
+    public Animal() {
+        super();
+        this.weight = Settings.maxNumbersOfCreatures.get(this.getClass())[0];
+        this.forFullSatiety = Settings.maxNumbersOfCreatures.get(this.getClass())[3];
     }
 
 
-    public void eat(Creature creature) {
+    public Creature eat(Creature creature) {
+        decreaseSatiety();
+        if (this.satiety == 100) {
+            return null;
+        }
         if (creature == null) {
             //Поменять характеристики
-            return;
+            decreaseSatiety();
+            return null;
         }
         if (this instanceof Herbivore) {
             if (creature.getClass() == Plant.class) {
                 //Убавить у травы "здоровье" на необъодимое количество для насышения животного
                 //либо до 0 если "здоровья" травы не хватает
-                System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
+                //System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
+                Double creatureWeight = Settings.maxNumbersOfCreatures.get(creature.getClass())[0];
+                if (Double.compare(forFullSatiety, creatureWeight) < 0) {
+                    satiety = 100;
+                } else {
+                    satiety += creatureWeight;
+                }
+                return creature;
                 //увеличить сытость текущего животного в соответсвии с количеством съеденного
             } //иначе убавить сытость и вес ? текущего создания
         } else if (this instanceof Predator) {
@@ -46,12 +62,20 @@ public abstract class Animal extends Creature {
                 //Найти вероятность того, что текущее существо может съесть входящее
                 Integer chance = getChanceToEat(creature);
                 Random random = new Random();
-                if (random.nextInt(100)+1 <= chance) {
-                    System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
-                    ((Animal) creature).die();
+                if (random.nextInt(100) + 1 <= chance) {
+                    //System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
+                    Double creatureWeight = Settings.maxNumbersOfCreatures.get(creature.getClass())[0];
+                    if (Double.compare(forFullSatiety, creatureWeight) < 0) {
+                        satiety = 100;
+                    } else {
+                       satiety += creatureWeight;
+                    }
+                    return creature;
                 }
             }
         }
+        decreaseSatiety();
+        return null;
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         // КТО ИМЕННО ЭТОТ Creature БУДЕТ ВЛИЯТЬ НА ФОРМАТ ПОЕДАНИЯ
         // КОГДА СТАНЕТ ПОНЯТНО КТО КОНКРЕТНО ЭТО Creature
@@ -59,29 +83,6 @@ public abstract class Animal extends Creature {
 
     }
 
-    /**
-     * Метод поиска создания для еды.
-     * @return - создание или null, если совпадения не найдены
-     */
-    public Creature findCreatureToEat() {
-        Set<Creature> creaturesNearby = location.getCreaturesOnLocation();
-        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.chanceMap.get(this.getClass());
-        if (classIntegerMap == null) {
-            return null;
-        }
-        List<Class<? extends Creature>> myFavoriteCreature = new ArrayList<>(classIntegerMap.keySet());
-
-        if (myFavoriteCreature.isEmpty()) {
-            return null;
-        }
-        Collections.shuffle(myFavoriteCreature);
-        for (Creature creature1 : creaturesNearby) {
-            if(myFavoriteCreature.contains(creature1.getClass())) {
-                return creature1;
-            }
-        }
-        return null;
-    }
 
     void move(Direction direction) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
@@ -90,23 +91,30 @@ public abstract class Animal extends Creature {
     public Creature reproduce() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         try {
-            long count = location.getCreaturesOnLocation().stream().filter(x -> x.getClass() == this.getClass()).count()-1;
-            if (count < 1) {
-                return (Creature) this.getClass().getConstructor(location.getClass()).newInstance(location);
+            decreaseSatiety();
+            if (satiety < 70) {
+                return null;
             }
+            Creature creature = (Creature) this.getClass().getConstructor().newInstance();
+            return creature;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             return null;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
         }
     }
 
     void die() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         System.out.println(this.getClass().getSimpleName() + " dies");
-        location.removeCreature(this);
+        isAlive = false;
     }
 
-    void decreaseWeight(){
+    void decreaseSatiety() {
+        this.satiety = this.satiety - (int) (weight / Settings.maxNumbersOfCreatures.get(this.getClass())[3]);
+        if (satiety < 0) {
+            this.isAlive = false;
+            //System.out.println(this.getClass().getSimpleName() + " умер от голода");
+        }
     }
 
     protected Integer getChanceToEat(Creature creature) {

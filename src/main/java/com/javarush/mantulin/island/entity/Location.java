@@ -31,10 +31,9 @@ public class Location {
      * @return true - при успешном добавлении создания в карту, false - если количество созданий превышает допустимую норму.
      */
     public boolean addCreature(Creature creature) {
-//        if (!creaturesOnLocation.contains(creature)) {
-//            creaturesOnLocation.add(creature);
-//            return true;
-//        }
+        if (creaturesOnLocation.contains(creature)) {
+            return true;
+        }
         long count = creaturesOnLocation.stream().filter(x -> x.getClass() == creature.getClass()).count();
         if (Double.compare(count, getMaxNumberOfCreature(creature)) < 0) {
             creaturesOnLocation.add(creature);
@@ -61,40 +60,49 @@ public class Location {
 
     public static void main(String[] args) {
         Location location = new Location();
-        Wolf c1 = new Wolf(location);
-        Animal c2 = new Fox(location);
+        Wolf c1 = new Wolf();
+        Animal c2 = new Fox();
         Plant c3 = new Plant(location);
-        Animal horse = new Horse(location);
+        Animal horse = new Horse();
         System.out.println(location.addCreature(c1));
         System.out.println(location.addCreature(c2));
         System.out.println(location.addCreature(c3));
         System.out.println(location.addCreature(horse));
-        location.addCreature(new Wolf(location));
-        location.addCreature(new Horse(location));
-        location.addCreature(new Horse(location));
-        location.addCreature(new Mouse(location));
-        location.addCreature(new Mouse(location));
-        location.addCreature(new Mouse(location));
-        for (int i = 0; i < 10; i++) {
+        System.out.println(location.addCreature(horse));
+        location.addCreature(new Wolf());
+        location.addCreature(new Horse());
+        location.addCreature(new Horse());
+        location.addCreature(new Mouse());
+        location.addCreature(new Mouse());
+        location.addCreature(new Mouse());
+        for (int i = 0; i < 100; i++) {
             System.out.println(location.creaturesOnLocation);
             for (Creature creature : location.creaturesOnLocation) {
                 if (creature instanceof Animal animal) {
-                    Creature creatureToEat = animal.findCreatureToEat();
-                    animal.eat(creatureToEat);
-                    Creature reproduce = animal.reproduce();
-                    if (reproduce != null) {
-                        location.addCreature(reproduce);
+                    //еда
+                    Creature creatureToEat = location.findCreatureToEat(animal);
+                    if(animal.eat(creatureToEat) != null) {
+                        location.removeCreature(creatureToEat);
+                    }
+                    //размножение
+                    if (location.creaturesOnLocation.stream().filter(x -> x.getClass() == animal.getClass()).count() > 1) {
+                        Creature reproduce = animal.reproduce();
+                        if (reproduce != null) {
+                            location.addCreature(reproduce);
+                        }
+
+                    }
+                    //проверяем на смерть
+                    if (!animal.isAlive) {
+                        location.removeCreature(animal);
                     }
                 }
                 location.addCreature(new Plant(location));
             }
-
         }
         System.out.println(location.creaturesOnLocation);
         Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> x.getClass().getSimpleName(), Collectors.counting()));
         System.out.println(collect);
-        System.out.println(location.creaturesOnLocation.stream().filter(x->x.getClass() == Wolf.class).count());
-        System.out.println(location.creaturesOnLocation.stream().filter(x->x.getClass() == Mouse.class).count());
     }
 
     /**
@@ -116,6 +124,31 @@ public class Location {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Поиск создания для еды другого создания.
+     * @param creature - создание для которого осуществляется поиск
+     * @return - создание, которое может съесть создание из входного параметра
+     */
+    public Creature findCreatureToEat(Creature creature) {
+        Set<Creature> creaturesNearby = getCreaturesOnLocation();
+        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.chanceMap.get(creature.getClass());
+        if (classIntegerMap == null) {
+            return null;
+        }
+        List<Class<? extends Creature>> myFavoriteCreature = new ArrayList<>(classIntegerMap.keySet());
+
+        if (myFavoriteCreature.isEmpty()) {
+            return null;
+        }
+        Collections.shuffle(myFavoriteCreature);
+        for (Creature creature1 : creaturesNearby) {
+            if(myFavoriteCreature.contains(creature1.getClass())) {
+                return creature1;
+            }
+        }
+        return null;
     }
 
 }
