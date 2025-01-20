@@ -3,12 +3,6 @@ package com.javarush.mantulin.island.entity;
 import com.javarush.mantulin.island.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
-import com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse;
-import com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse;
-import com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit;
-import com.javarush.mantulin.island.entity.creature.animal.predator.Eagle;
-import com.javarush.mantulin.island.entity.creature.animal.predator.Fox;
-import com.javarush.mantulin.island.entity.creature.animal.predator.Wolf;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
 import com.javarush.mantulin.island.util.AnimalFactory;
 
@@ -74,30 +68,17 @@ public class Location {
 
     public static void main(String[] args) {
         Location location = new Location();
-//        Wolf c1 = new Wolf();
-//        Animal c2 = new Fox();
-//        Plant c3 = new Plant();
-//        Animal horse = new Horse();
-//        System.out.println(location.addCreature(c1));
-//        System.out.println(location.addCreature(c2));
-//        System.out.println(location.addCreature(c3));
-//        System.out.println(location.addCreature(horse));
-//        System.out.println(location.addCreature(horse));
-//        location.addCreature(new Wolf());
-//        location.addCreature(new Horse());
-//        location.addCreature(new Horse());
-//        location.addCreature(new Mouse());
-//        location.addCreature(new Mouse());
-//        location.addCreature(new Mouse());
-//        location.addCreature(new Eagle());
-//        location.addCreature(new Rabbit());
-//        location.addCreature(new Rabbit());
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10; i++) {
 //            System.out.println(location.creaturesOnLocation);
             Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
             System.out.println(collect);
             for (Creature creature : location.creaturesOnLocation) {
                 if (creature instanceof Animal animal) {
+                    //проверяем на смерть
+                    if (!animal.isAlive) {
+                        location.removeCreature(animal);
+                        continue;
+                    }
                     //еда
                     Creature creatureToEat = location.findCreatureToEat(animal);
                     if(animal.eat(creatureToEat) != null) {
@@ -110,10 +91,6 @@ public class Location {
                             location.addCreature(reproduce);
                         }
 
-                    }
-                    //проверяем на смерть
-                    if (!animal.isAlive) {
-                        location.removeCreature(animal);
                     }
                 }
                 location.addCreature(new Plant());

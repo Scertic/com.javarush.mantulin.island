@@ -34,7 +34,7 @@ public abstract class Animal extends Creature {
 
     public Creature eat(Creature creature) {
         decreaseSatiety();
-        if (this.satiety == 100) {
+        if (this.satiety == 100 || satiety < 0) {
             return null;
         }
         if (creature == null) {
@@ -47,28 +47,21 @@ public abstract class Animal extends Creature {
                 //Убавить у травы "здоровье" на необъодимое количество для насышения животного
                 //либо до 0 если "здоровья" травы не хватает
                 //System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
-                Double creatureWeight = Settings.maxNumbersOfCreatures.get(creature.getClass())[0];
-                if (Double.compare(forFullSatiety, creatureWeight) < 0) {
-                    satiety = 100;
-                } else {
-                    satiety += creatureWeight;
-                }
+                increaseSatiety(creature);
                 return creature;
                 //увеличить сытость текущего животного в соответсвии с количеством съеденного
             } //иначе убавить сытость и вес ? текущего создания
         } else if (this instanceof Predator) {
             if (creature instanceof Animal) {
+                if (!((Animal) creature).isAlive) {
+                    return null;
+                }
                 //Найти вероятность того, что текущее существо может съесть входящее
                 Integer chance = getChanceToEat(creature);
                 Random random = new Random();
                 if (random.nextInt(100) + 1 <= chance) {
                     //System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
-                    Double creatureWeight = Settings.maxNumbersOfCreatures.get(creature.getClass())[0];
-                    if (Double.compare(forFullSatiety, creatureWeight) < 0) {
-                        satiety = 100;
-                    } else {
-                       satiety += creatureWeight;
-                    }
+                    increaseSatiety(creature);
                     return creature;
                 }
             }
@@ -80,6 +73,15 @@ public abstract class Animal extends Creature {
         // КОГДА СТАНЕТ ПОНЯТНО КТО КОНКРЕТНО ЭТО Creature
         // МЫ МОЖЕМ ОПРЕДЕЛИТЬ ВЕРОЯТНОСТЬ ЕГО ПОЕДАНИЯ И РЕАЛИЗОВАТЬ ЭТУ ЛОГИКУ
 
+    }
+
+    protected void increaseSatiety(Creature creature) {
+        Double creatureWeight = Settings.maxNumbersOfCreatures.get(creature.getClass())[0];
+        if (Double.compare(forFullSatiety, creatureWeight) < 0) {
+            satiety = 100;
+        } else {
+           satiety += creatureWeight;
+        }
     }
 
 
@@ -106,7 +108,7 @@ public abstract class Animal extends Creature {
         isAlive = false;
     }
 
-    void decreaseSatiety() {
+    protected void decreaseSatiety() {
         this.satiety = this.satiety - (int) (weight / Settings.maxNumbersOfCreatures.get(this.getClass())[3]);
         if (satiety < 0) {
             this.die();
