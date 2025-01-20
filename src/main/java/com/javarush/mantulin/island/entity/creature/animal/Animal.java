@@ -1,7 +1,6 @@
 package com.javarush.mantulin.island.entity.creature.animal;
 
 import com.javarush.mantulin.island.Settings;
-import com.javarush.mantulin.island.entity.Location;
 import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.herbivore.Herbivore;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Predator;
@@ -23,7 +22,7 @@ public abstract class Animal extends Creature {
 
     double weight;
     public int satiety = 100;
-    private double forFullSatiety;
+    private final double forFullSatiety;
     public boolean isAlive = true;
 
     public Animal() {
@@ -95,8 +94,7 @@ public abstract class Animal extends Creature {
             if (satiety < 70) {
                 return null;
             }
-            Creature creature = (Creature) this.getClass().getConstructor().newInstance();
-            return creature;
+            return this.getClass().getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
             return null;
@@ -118,8 +116,7 @@ public abstract class Animal extends Creature {
     }
 
     protected Integer getChanceToEat(Creature creature) {
-        Integer chance = Settings.chanceMap.get(this.getClass()).get(creature.getClass());
-        return chance;
+        return Settings.chanceMap.get(this.getClass()).get(creature.getClass());
     }
 
 }

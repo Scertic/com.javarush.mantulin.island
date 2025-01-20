@@ -1,7 +1,6 @@
 package com.javarush.mantulin.island.entity.creature;
 
 import com.javarush.mantulin.island.Settings;
-import com.javarush.mantulin.island.entity.Location;
 
 import java.util.Objects;
 
@@ -12,7 +11,7 @@ public abstract class Creature {
 
     private static int uniqueId = 0;
     private final String name;
-    private String ico;
+    private final String ico;
 
 
     public Creature() {

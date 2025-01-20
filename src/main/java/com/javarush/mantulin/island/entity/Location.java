@@ -64,7 +64,7 @@ public class Location {
         Location location = new Location();
         Wolf c1 = new Wolf();
         Animal c2 = new Fox();
-        Plant c3 = new Plant(location);
+        Plant c3 = new Plant();
         Animal horse = new Horse();
         System.out.println(location.addCreature(c1));
         System.out.println(location.addCreature(c2));
@@ -102,7 +102,7 @@ public class Location {
                         location.removeCreature(animal);
                     }
                 }
-                location.addCreature(new Plant(location));
+                location.addCreature(new Plant());
             }
         }
         System.out.println(location.creaturesOnLocation);

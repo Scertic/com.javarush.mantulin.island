@@ -4,7 +4,6 @@ import com.javarush.mantulin.island.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
 import com.javarush.mantulin.island.entity.creature.animal.herbivore.Herbivore;
-import com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Predator;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +26,7 @@ public class AnimalFactory {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-    };
+    }
 
     /**
      * Метод возвращет хищное животное.
@@ -43,6 +42,6 @@ public class AnimalFactory {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-    };
+    }
 
 }

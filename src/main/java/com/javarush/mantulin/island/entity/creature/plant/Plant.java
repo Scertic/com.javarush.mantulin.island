@@ -4,7 +4,7 @@ import com.javarush.mantulin.island.entity.Location;
 import com.javarush.mantulin.island.entity.creature.Creature;
 
 public class Plant extends Creature {
-    public Plant(Location location) {
+    public Plant() {
         super();
     }
 
