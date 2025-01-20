@@ -5,6 +5,8 @@ import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
 import com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse;
 import com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse;
+import com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit;
+import com.javarush.mantulin.island.entity.creature.animal.predator.Eagle;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Fox;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Wolf;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
@@ -75,6 +77,9 @@ public class Location {
         location.addCreature(new Mouse());
         location.addCreature(new Mouse());
         location.addCreature(new Mouse());
+        location.addCreature(new Eagle());
+        location.addCreature(new Rabbit());
+        location.addCreature(new Rabbit());
         for (int i = 0; i < 100; i++) {
             System.out.println(location.creaturesOnLocation);
             for (Creature creature : location.creaturesOnLocation) {
