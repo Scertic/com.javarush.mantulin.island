@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class Settings {
 
-    public final static int columnsCount = 2;
-    public final static int rowsCount = 10;
+    public final static int columnsCount = 1;
+    public final static int rowsCount = 1;
 
     /**
      * Карта соответсвий классов животных и их характеристикам.
