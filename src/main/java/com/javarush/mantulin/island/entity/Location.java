@@ -173,7 +173,6 @@ public class Location implements Runnable{
             if (getCreatureGroupBy().keySet().size() == 1)
                 break;
         }
-
     }
 
     public Map<String, Long> getCreatureGroupBy() {

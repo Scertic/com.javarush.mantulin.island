@@ -16,11 +16,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public abstract class Animal extends Creature {
 
-    // ОБЩИЕ ХАРАКТЕРИСТИКИ
-    // СЫТОСТЬ satiety = ? вес
-    // ВЕС ЖИВОТНОГО
-    // СКОРОСТЬ ПЕРЕМЕЩЕНИЯ
-
     double weight;
     public int satiety = 100;
     private final double forFullSatiety;
