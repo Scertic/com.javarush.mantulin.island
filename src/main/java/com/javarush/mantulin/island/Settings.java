@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class Settings {
 
-    public final static int columnsCount = 2;
-    public final static int rowsCount = 1;
+    public final static int columnsCount = 20;
+    public final static int rowsCount = 100;
 
     /**
      * Карта соответсвий классов животных и их характеристикам.
@@ -23,7 +23,9 @@ public class Settings {
      */
     public final static Map<Class<? extends Creature>, Double[]> maxNumbersOfCreatures = new HashMap<>();
     public final static Map<Class<? extends  Creature>, String> icoMap = new HashMap<>();
-    public final static int simCount = 10;
+
+    //Количество симуляций
+    public final static int simCount = 1;
 
     static {
         icoMap.put(Wolf.class, "\uD83D\uDC3A");

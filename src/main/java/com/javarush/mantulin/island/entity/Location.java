@@ -8,6 +8,7 @@ import com.javarush.mantulin.island.util.AnimalFactory;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -54,12 +55,14 @@ public class Location implements Runnable{
 
     public Location() {
         AnimalFactory factory = new AnimalFactory();
-        List<Creature> creatureList = new ArrayList<>(70000);
-        for (int i = 0; i < 2000000; i++) {
-            creatureList.add(factory.getHerbivore());
-        }
-        for (int i = 0; i < 5; i++) {
-            creatureList.add(factory.getPredator());
+        List<Creature> creatureList = new ArrayList<>(3000);
+        for (Class<? extends Creature> aClass : Settings.maxNumbersOfCreatures.keySet()) {
+            ThreadLocalRandom random = ThreadLocalRandom.current();
+            int count = Settings.maxNumbersOfCreatures.get(aClass)[1].intValue();
+            int maxRandom = random.nextInt(count)+1;
+            for (int i = 0; i < maxRandom; i++) {
+                creatureList.add(factory.getCreature(aClass));
+            }
         }
         Collections.shuffle(creatureList);
         creaturesOnLocation.addAll(creatureList);
@@ -160,17 +163,20 @@ public class Location implements Runnable{
 
     @Override
     public void run() {
+        //TODO Управление днем отдать острову
         System.out.println(getName() + " Day-" + 0);
-        Map<String, Long> collect = creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
-        System.out.println(collect);
+        System.out.println(getCreatureGroupBy());
         for (int i = 0; i < Settings.simCount; i++) {
-            System.out.println(getName() + " Day-" + i+1);
+            System.out.println(getName() + " Day-" + (i+1));
             simulateLifeCycle();
-            collect = creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
-            System.out.println(collect);
-            if (collect.keySet().size() == 1)
+            System.out.println(getCreatureGroupBy());
+            if (getCreatureGroupBy().keySet().size() == 1)
                 break;
         }
 
+    }
+
+    public Map<String, Long> getCreatureGroupBy() {
+        return creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
     }
 }

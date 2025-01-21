@@ -14,7 +14,8 @@ public class Application {
         for (int i = 0; i < island.locations.length; i++) {
             for (int j = 0; j <island.locations[i].length; j++) {
                 island.locations[i][j] = new Location();
-                //new Thread(island.locations[i][j]).start();
+//                System.out.println(island.locations[i][j].getCreatureGroupBy());
+                new Thread(island.locations[i][j]).start();
             }
         }
         long l1 = System.currentTimeMillis();

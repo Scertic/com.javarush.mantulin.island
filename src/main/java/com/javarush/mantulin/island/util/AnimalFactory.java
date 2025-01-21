@@ -50,4 +50,17 @@ public class AnimalFactory {
         }
     }
 
+    /**
+     * Метод для получения экземпляра существа определенного класса.
+     * @param creatureClass - класс существа
+     * @return - существо
+     */
+    public Creature getCreature(Class<? extends Creature> creatureClass) {
+        try {
+            return creatureClass.getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
