@@ -8,19 +8,16 @@ import com.javarush.mantulin.island.util.AnimalFactory;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-public class Location {
-
-    // ЛОКАЦИЯ ДОЛЖНА ЗНАТЬ ТЕКУЩЕЕ КОЛ-ВО ЖИВОТНЫХ КОНКРЕТНОГО ВИДА
-    // НА СЕБЕ
-    // МАССИВ?
-
-    //Карта соотвествий созданий и их количества на локации
-//    private final Map<Creature, Integer> creaturesToCount = new HashMap<>();
+public class Location implements Runnable{
 
     //Список всех созданий в локации
     private final List<Creature> creaturesOnLocation = new CopyOnWriteArrayList<>();
+    private final ReentrantLock lock;
+    private static int locationID;
+    private String name;
 
     /**
      * Метод для добавления создания в карту соотвествий созданий и их количества.
@@ -28,15 +25,20 @@ public class Location {
      * @return true - при успешном добавлении создания в карту, false - если количество созданий превышает допустимую норму.
      */
     public boolean addCreature(Creature creature) {
-        if (creaturesOnLocation.contains(creature)) {
-            return true;
+        lock.lock();
+        try {
+            if (creaturesOnLocation.contains(creature)) {
+                return true;
+            }
+            long count = creaturesOnLocation.stream().filter(x -> x.getClass() == creature.getClass()).count();
+            if (Double.compare(count, getMaxNumberOfCreature(creature)) < 0) {
+                creaturesOnLocation.add(creature);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.unlock();
         }
-        long count = creaturesOnLocation.stream().filter(x -> x.getClass() == creature.getClass()).count();
-        if (Double.compare(count, getMaxNumberOfCreature(creature)) < 0) {
-            creaturesOnLocation.add(creature);
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -52,54 +54,49 @@ public class Location {
 
     public Location() {
         AnimalFactory factory = new AnimalFactory();
-        List<Creature> creatureList = new ArrayList<>(15);
-        for (int i = 0; i < 10; i++) {
-            creatureList.add(factory.createHerbivore());
+        List<Creature> creatureList = new ArrayList<>(70000);
+        for (int i = 0; i < 2000000; i++) {
+            creatureList.add(factory.getHerbivore());
         }
         for (int i = 0; i < 5; i++) {
-            creatureList.add(factory.createPredator());
+            creatureList.add(factory.getPredator());
         }
         Collections.shuffle(creatureList);
         creaturesOnLocation.addAll(creatureList);
+        lock = new ReentrantLock();
+        locationID++;
+        name = "Location-"+locationID;
     }
 
     // ЛОКАЦИЮ ТОЖЕ НУЖНО ПРАВИЛЬНО СОЗДАТЬ -
     // ИНИЦИАЛИЗИРОВАВ ЕЕ НА СТАРТЕ КАКИМ-ТО КОЛ-ВОМ ЖИВОТНЫХ И РАСТЕНИЙ
 
-    public static void main(String[] args) {
-        Location location = new Location();
-        for (int i = 0; i < 10; i++) {
-//            System.out.println(location.creaturesOnLocation);
-            Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
-            System.out.println(collect);
-            for (Creature creature : location.creaturesOnLocation) {
-                if (creature instanceof Animal animal) {
-                    //проверяем на смерть
-                    if (!animal.isAlive) {
-                        location.removeCreature(animal);
-                        continue;
-                    }
-                    //еда
-                    Creature creatureToEat = location.findCreatureToEat(animal);
-                    if(animal.eat(creatureToEat) != null) {
-                        location.removeCreature(creatureToEat);
-                    }
-                    //размножение
-                    if (location.creaturesOnLocation.stream().filter(x -> x.getClass() == animal.getClass()).count() > 1) {
-                        Creature reproduce = animal.reproduce();
-                        if (reproduce != null) {
-                            location.addCreature(reproduce);
-                        }
+    private void simulateLifeCycle() {
 
-                    }
+        for (Creature creature : creaturesOnLocation) {
+            if (creature instanceof Animal animal) {
+                //проверяем на смерть
+                if (!animal.isAlive) {
+                    removeCreature(animal);
+                    continue;
                 }
-                location.addCreature(new Plant());
+                //еда
+                Creature creatureToEat = findCreatureToEat(animal);
+                if(animal.eat(creatureToEat) != null) {
+                    removeCreature(creatureToEat);
+                }
+                //размножение
+                if (creaturesOnLocation.stream().filter(x -> x.getClass() == animal.getClass()).count() > 1) {
+                    Creature reproduce = animal.reproduce();
+                    if (reproduce != null) {
+                        addCreature(reproduce);
+                    }
+
+                }
             }
-            if (collect.keySet().size() == 1)
-                break;
+            //Спавним растение
+            addCreature(new Plant());
         }
-        Map<String, Long> collect = location.creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
-        System.out.println(collect);
     }
 
     /**
@@ -116,11 +113,16 @@ public class Location {
      * @return - истина если удаление произошло успешно, и ложь, если нет.
      */
     public boolean removeCreature(Creature creature) {
-        if (creaturesOnLocation.contains(creature)) {
-            creaturesOnLocation.remove(creature);
-            return true;
+        lock.lock();
+        try {
+            if (creaturesOnLocation.contains(creature)) {
+                creaturesOnLocation.remove(creature);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.unlock();
         }
-        return false;
     }
 
     /**
@@ -148,4 +150,27 @@ public class Location {
         return null;
     }
 
+    public ReentrantLock getLock() {
+        return lock;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void run() {
+        System.out.println(getName() + " Day-" + 0);
+        Map<String, Long> collect = creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
+        System.out.println(collect);
+        for (int i = 0; i < Settings.simCount; i++) {
+            System.out.println(getName() + " Day-" + i+1);
+            simulateLifeCycle();
+            collect = creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
+            System.out.println(collect);
+            if (collect.keySet().size() == 1)
+                break;
+        }
+
+    }
 }

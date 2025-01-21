@@ -9,6 +9,7 @@ import com.javarush.mantulin.island.util.Direction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Абстрактный класс для описания поведения и состояния животного по умолчанию.
@@ -30,7 +31,6 @@ public abstract class Animal extends Creature {
         this.weight = Settings.maxNumbersOfCreatures.get(this.getClass())[0];
         this.forFullSatiety = Settings.maxNumbersOfCreatures.get(this.getClass())[3];
     }
-
 
     public Creature eat(Creature creature) {
         decreaseSatiety();
@@ -68,11 +68,6 @@ public abstract class Animal extends Creature {
         }
         decreaseSatiety();
         return null;
-        // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        // КТО ИМЕННО ЭТОТ Creature БУДЕТ ВЛИЯТЬ НА ФОРМАТ ПОЕДАНИЯ
-        // КОГДА СТАНЕТ ПОНЯТНО КТО КОНКРЕТНО ЭТО Creature
-        // МЫ МОЖЕМ ОПРЕДЕЛИТЬ ВЕРОЯТНОСТЬ ЕГО ПОЕДАНИЯ И РЕАЛИЗОВАТЬ ЭТУ ЛОГИКУ
-
     }
 
     protected void increaseSatiety(Creature creature) {
@@ -84,11 +79,32 @@ public abstract class Animal extends Creature {
         }
     }
 
-
-    void move(Direction direction) {
+    /**
+     * Метод возвращает количество перемещений за раз.
+     * @param direction - направление перемещения
+     * @return - количество перемещений за раз
+     */
+    public int move(Direction direction) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
+        int step = Settings.maxNumbersOfCreatures.get(this.getClass())[2].intValue();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        return random.nextInt(step+1);
     }
 
+    /**
+     * Метод выбора случаного направления.
+     * @return - возвращает направление.
+     */
+    public Direction chooseDirection() {
+        int count = Direction.values().length;
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        return Direction.values()[random.nextInt(count)];
+    }
+
+    /**
+     * Метод размножения существ.
+     * @return - возвращает новый экземпляр текущего существа.
+     */
     public Creature reproduce() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         try {

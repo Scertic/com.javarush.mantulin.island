@@ -12,17 +12,24 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class AnimalFactory {
 
+    private List<Class<? extends Creature>> listHerbivore;
+    private List<Class<? extends Creature>> listPredator;
+
+    public AnimalFactory() {
+        this.listHerbivore = Settings.maxNumbersOfCreatures.keySet().stream().filter(Herbivore.class::isAssignableFrom).toList();;
+        this.listPredator = Settings.maxNumbersOfCreatures.keySet().stream().filter(Predator.class::isAssignableFrom).toList();;
+    }
+
     /**
      * Метод возвращет травоядное животное.
      * Метод требует конструктор по умолчанию.
      * @return - возвращает случайный экземпляр травоядного животного.
      */
-    public Animal createHerbivore() {
-        List<Class<? extends Creature>> list = Settings.maxNumbersOfCreatures.keySet().stream().filter(Herbivore.class::isAssignableFrom).toList();
+    public Creature getHerbivore() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        int randomIX = random.nextInt(list.size());
+        int randomIX = random.nextInt(listHerbivore.size());
         try {
-            return (Animal) list.get(randomIX).getConstructor().newInstance();
+            return listHerbivore.get(randomIX).getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -33,12 +40,11 @@ public class AnimalFactory {
      * Метод требует конструктор по умолчанию.
      * @return - возвращает случайный экземпляр хищного животного.
      */
-    public Animal createPredator() {
-        List<Class<? extends Creature>> list = Settings.maxNumbersOfCreatures.keySet().stream().filter(Predator.class::isAssignableFrom).toList();
+    public Creature getPredator() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
-        int randomIX = random.nextInt(list.size());
+        int randomIX = random.nextInt(listPredator.size());
         try {
-            return (Animal) list.get(randomIX).getConstructor().newInstance();
+            return listPredator.get(randomIX).getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
