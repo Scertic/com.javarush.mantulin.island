@@ -4,7 +4,7 @@ import com.javarush.mantulin.island.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;
-import com.javarush.mantulin.island.util.AnimalFactory;
+import com.javarush.mantulin.island.util.CreatureFactory;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -54,7 +54,7 @@ public class Location implements Runnable{
     }
 
     public Location() {
-        AnimalFactory factory = new AnimalFactory();
+        CreatureFactory factory = new CreatureFactory();
         List<Creature> creatureList = new ArrayList<>(3000);
         for (Class<? extends Creature> aClass : Settings.maxNumbersOfCreatures.keySet()) {
             ThreadLocalRandom random = ThreadLocalRandom.current();

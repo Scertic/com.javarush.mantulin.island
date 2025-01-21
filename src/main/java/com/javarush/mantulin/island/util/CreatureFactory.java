@@ -2,7 +2,6 @@ package com.javarush.mantulin.island.util;
 
 import com.javarush.mantulin.island.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
-import com.javarush.mantulin.island.entity.creature.animal.Animal;
 import com.javarush.mantulin.island.entity.creature.animal.herbivore.Herbivore;
 import com.javarush.mantulin.island.entity.creature.animal.predator.Predator;
 
@@ -10,12 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AnimalFactory {
+public class CreatureFactory {
 
     private List<Class<? extends Creature>> listHerbivore;
     private List<Class<? extends Creature>> listPredator;
 
-    public AnimalFactory() {
+    public CreatureFactory() {
         this.listHerbivore = Settings.maxNumbersOfCreatures.keySet().stream().filter(Herbivore.class::isAssignableFrom).toList();;
         this.listPredator = Settings.maxNumbersOfCreatures.keySet().stream().filter(Predator.class::isAssignableFrom).toList();;
     }
