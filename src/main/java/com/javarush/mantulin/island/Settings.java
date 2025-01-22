@@ -9,25 +9,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Settings {
-
-    public final static int columnsCount = 1;
-    public final static int rowsCount = 1;
+    private static Settings settings;
+    private final int columnsCount = 1;
+    private final int rowsCount = 1;
 
     /**
-     * Карта соответсвий классов животных и их характеристикам.
-     * Порядок в массиве:
-     * 0 - Вес одного животного, кг
-     * 1- Максимальное количество животных этого вида на одной локации
-     * 2 - Скорость перемещения, не более чем локаций за ход
-     * 3 - Сколько киллограммов пищи нужно животному до полного насыщения
+     * Карта соответсвий классов животных и их характеристикам:
+     * weight - Вес одного животного, кг
+     * maxCountOnLocation - Максимальное количество животных этого вида на одной локации
+     * maxSteps - Скорость перемещения, не более чем локаций за ход
+     * foodWeightForFullSatiety - Сколько киллограммов пищи нужно животному до полного насыщения
      */
-    public final static Map<Class<? extends Creature>, Double[]> maxNumbersOfCreatures = new HashMap<>();
-    public final static Map<Class<? extends  Creature>, String> icoMap = new HashMap<>();
+    private final Map<Class<? extends Creature>, Map<String, Number>> creatureSettings = new HashMap<>();
+    private final Map<Class<? extends  Creature>, String> icoMap = new HashMap<>();
 
     //Количество симуляций
-    public final static int simCount = 1;
+    private final int simCount = 1;
 
-    static {
+    {
         icoMap.put(Wolf.class, "\uD83D\uDC3A");
         icoMap.put(Buffalo.class, "\uD83D\uDC03");
         icoMap.put(Bear.class, "\uD83D\uDC3B");
@@ -44,30 +43,31 @@ public class Settings {
         icoMap.put(Mouse.class, "\uD83D\uDC01");
         icoMap.put(Caterpillar.class, "\uD83D\uDC1B");
         icoMap.put(Plant.class, "\uD83C\uDF3F");
+        icoMap.put(Creature.class, "?");
     }
 
-    static {
-        maxNumbersOfCreatures.put(Wolf.class, new Double[]{50.0, 30.0, 3.0, 8.0});
-        maxNumbersOfCreatures.put(Boa.class, new Double[]{15.0, 30.0, 1.0, 3.0});
-        maxNumbersOfCreatures.put(Fox.class, new Double[]{8.0, 30.0, 2.0, 2.0});
-        maxNumbersOfCreatures.put(Bear.class, new Double[]{500.0, 5.0, 2.0, 80.0});
-        maxNumbersOfCreatures.put(Eagle.class, new Double[]{6.0, 20.0, 3.0, 1.0});
-        maxNumbersOfCreatures.put(Horse.class, new Double[]{400.0, 20.0, 4.0, 60.0});
-        maxNumbersOfCreatures.put(Deer.class, new Double[]{300.0, 20.0, 4.0, 50.0});
-        maxNumbersOfCreatures.put(Rabbit.class, new Double[]{2.0, 150.0, 2.0, 0.45});
-        maxNumbersOfCreatures.put(Mouse.class, new Double[]{0.05, 500.0, 1.0, 0.01});
-        maxNumbersOfCreatures.put(Goat.class, new Double[]{60.0, 140.0, 3.0, 10.0});
-        maxNumbersOfCreatures.put(Sheep.class, new Double[]{70.0, 140.0, 3.0, 15.0});
-        maxNumbersOfCreatures.put(Boar.class, new Double[]{400.0, 50.0, 2.0, 50.0});
-        maxNumbersOfCreatures.put(Buffalo.class, new Double[]{700.0, 10.0, 3.0, 100.0});
-        maxNumbersOfCreatures.put(Duck.class, new Double[]{1.0, 200.0, 4.0, 0.15});
-        maxNumbersOfCreatures.put(Caterpillar.class, new Double[]{0.01, 1000.0, 0.0, 0.0});
-        maxNumbersOfCreatures.put(Plant.class, new Double[]{1.0, 200.0, 0.0, 0.0});
+    {
+        creatureSettings.put(Wolf.class, Map.of("weight", 50, "maxCountOnLocation", 30, "maxSteps", 3, "foodWeightForFullSatiety", 8.5));
+        creatureSettings.put(Boa.class, Map.of("weight", 15, "maxCountOnLocation", 30, "maxSteps", 1, "foodWeightForFullSatiety", 3));
+        creatureSettings.put(Fox.class, Map.of("weight", 8, "maxCountOnLocation", 30, "maxSteps", 2, "foodWeightForFullSatiety", 2));
+        creatureSettings.put(Bear.class, Map.of("weight", 500, "maxCountOnLocation", 5, "maxSteps", 2, "foodWeightForFullSatiety", 80));
+        creatureSettings.put(Eagle.class, Map.of("weight", 6, "maxCountOnLocation", 20, "maxSteps", 3, "foodWeightForFullSatiety", 1));
+        creatureSettings.put(Horse.class, Map.of("weight", 400, "maxCountOnLocation", 20, "maxSteps", 4, "foodWeightForFullSatiety", 60));
+        creatureSettings.put(Deer.class, Map.of("weight", 300, "maxCountOnLocation", 20, "maxSteps", 4, "foodWeightForFullSatiety", 50));
+        creatureSettings.put(Rabbit.class, Map.of("weight", 2, "maxCountOnLocation", 150, "maxSteps", 2, "foodWeightForFullSatiety", 0.45));
+        creatureSettings.put(Mouse.class, Map.of("weight", 0.05, "maxCountOnLocation", 500, "maxSteps", 1, "foodWeightForFullSatiety", 0.1));
+        creatureSettings.put(Goat.class, Map.of("weight", 60, "maxCountOnLocation", 140, "maxSteps", 3, "foodWeightForFullSatiety", 10));
+        creatureSettings.put(Sheep.class, Map.of("weight", 70, "maxCountOnLocation", 140, "maxSteps", 3, "foodWeightForFullSatiety", 15));
+        creatureSettings.put(Boar.class, Map.of("weight", 400, "maxCountOnLocation", 50, "maxSteps", 2, "foodWeightForFullSatiety", 50));
+        creatureSettings.put(Buffalo.class, Map.of("weight", 700, "maxCountOnLocation", 10, "maxSteps", 3, "foodWeightForFullSatiety", 100));
+        creatureSettings.put(Duck.class, Map.of("weight", 1, "maxCountOnLocation", 200, "maxSteps", 4, "foodWeightForFullSatiety", 0.15));
+        creatureSettings.put(Caterpillar.class, Map.of("weight", 0.01, "maxCountOnLocation", 1000, "maxSteps", 0, "foodWeightForFullSatiety", 0));
+        creatureSettings.put(Plant.class, Map.of("weight", 1, "maxCountOnLocation", 200, "maxSteps", 0, "foodWeightForFullSatiety", 0));
     }
 
-    public final static Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> chanceMap = new HashMap<>();
+    private final Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> chanceMap = new HashMap<>();
 
-    static {
+    {
         chanceMap.put(Wolf.class, Map.of(
 //                    Fox.class, 0,
                 Horse.class, 10,
@@ -145,5 +145,37 @@ public class Settings {
                 Plant.class, 100
         ));
     }
+    private Settings() {
+    }
 
+    public static Settings getInstance() {
+        if (settings != null) {
+            return settings;
+        }
+        return new Settings();
+    }
+
+    public int getColumnsCount() {
+        return columnsCount;
+    }
+
+    public int getRowsCount() {
+        return rowsCount;
+    }
+
+    public Map<Class<? extends Creature>, Map<String, Number>> getCreatureSettings() {
+        return new HashMap<>(creatureSettings);
+    }
+
+    public Map<Class<? extends Creature>, String> getIcoMap() {
+        return new HashMap<>(icoMap);
+    }
+
+    public Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> getChanceMap() {
+        return new HashMap<>(chanceMap);
+    }
+
+    public int getSimCount() {
+        return simCount;
+    }
 }

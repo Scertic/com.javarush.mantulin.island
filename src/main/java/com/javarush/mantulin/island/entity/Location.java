@@ -48,17 +48,17 @@ public class Location implements Runnable{
      * @return - максимальное количество созданий данного вида в локации.
      * Возвращает 0, если такого создания не нашлось в настройках.
      */
-    public Double getMaxNumberOfCreature(Creature creature) {
-        Double max = Settings.maxNumbersOfCreatures.get(creature.getClass())[1];
-        return max != null ? max : 0.0;
+    public int getMaxNumberOfCreature(Creature creature) {
+        int maxCountOnLocation = Settings.getInstance().getCreatureSettings().get(creature.getClass()).get("maxCountOnLocation").intValue();
+        return maxCountOnLocation;
     }
 
     public Location() {
         CreatureFactory factory = new CreatureFactory();
         List<Creature> creatureList = new ArrayList<>(3000);
-        for (Class<? extends Creature> aClass : Settings.maxNumbersOfCreatures.keySet()) {
+        for (Class<? extends Creature> aClass : Settings.getInstance().getCreatureSettings().keySet()) {
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            int count = Settings.maxNumbersOfCreatures.get(aClass)[1].intValue();
+            int count = Settings.getInstance().getCreatureSettings().get(aClass).get("maxCountOnLocation").intValue();
             int maxRandom = random.nextInt(count)+1;
             for (int i = 0; i < maxRandom; i++) {
                 creatureList.add(factory.getCreature(aClass));
@@ -135,7 +135,7 @@ public class Location implements Runnable{
      */
     public Creature findCreatureToEat(Creature creature) {
         Set<Creature> creaturesNearby = getCreaturesOnLocation();
-        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.chanceMap.get(creature.getClass());
+        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.getInstance().getChanceMap().get(creature.getClass());
         if (classIntegerMap == null) {
             return null;
         }
@@ -166,7 +166,7 @@ public class Location implements Runnable{
         //TODO Управление днем отдать острову
         System.out.println(getName() + " Day-" + 0);
         System.out.println(getCreatureGroupBy());
-        for (int i = 0; i < Settings.simCount; i++) {
+        for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             System.out.println(getName() + " Day-" + (i+1));
             simulateLifeCycle();
             System.out.println(getCreatureGroupBy());
@@ -176,6 +176,6 @@ public class Location implements Runnable{
     }
 
     public Map<String, Long> getCreatureGroupBy() {
-        return creaturesOnLocation.stream().collect(Collectors.groupingBy(x -> Settings.icoMap.get(x.getClass()), Collectors.counting()));
+        return creaturesOnLocation.stream().collect(Collectors.groupingBy(Creature::toString, Collectors.counting()));
     }
 }

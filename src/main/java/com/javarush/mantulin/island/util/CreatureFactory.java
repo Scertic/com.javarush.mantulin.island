@@ -11,12 +11,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CreatureFactory {
 
-    private List<Class<? extends Creature>> listHerbivore;
-    private List<Class<? extends Creature>> listPredator;
+    private final List<Class<? extends Creature>> listHerbivore;
+    private final List<Class<? extends Creature>> listPredator;
 
     public CreatureFactory() {
-        this.listHerbivore = Settings.maxNumbersOfCreatures.keySet().stream().filter(Herbivore.class::isAssignableFrom).toList();;
-        this.listPredator = Settings.maxNumbersOfCreatures.keySet().stream().filter(Predator.class::isAssignableFrom).toList();;
+        this.listHerbivore = Settings.getInstance().getCreatureSettings().keySet().stream().filter(Herbivore.class::isAssignableFrom).toList();;
+        this.listPredator = Settings.getInstance().getCreatureSettings().keySet().stream().filter(Predator.class::isAssignableFrom).toList();;
     }
 
     /**

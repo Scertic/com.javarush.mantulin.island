@@ -23,8 +23,8 @@ public abstract class Animal extends Creature {
 
     public Animal() {
         super();
-        this.weight = Settings.maxNumbersOfCreatures.get(this.getClass())[0];
-        this.forFullSatiety = Settings.maxNumbersOfCreatures.get(this.getClass())[3];
+        this.weight = Settings.getInstance().getCreatureSettings().get(this.getClass()).get("weight").doubleValue();
+        this.forFullSatiety = Settings.getInstance().getCreatureSettings().get(this.getClass()).get("foodWeightForFullSatiety").doubleValue();
     }
 
     public Creature eat(Creature creature) {
@@ -66,7 +66,7 @@ public abstract class Animal extends Creature {
     }
 
     protected void increaseSatiety(Creature creature) {
-        Double creatureWeight = Settings.maxNumbersOfCreatures.get(creature.getClass())[0];
+        double creatureWeight = Settings.getInstance().getCreatureSettings().get(creature.getClass()).get("weight").doubleValue();
         if (Double.compare(forFullSatiety, creatureWeight) < 0) {
             satiety = 100;
         } else {
@@ -81,7 +81,7 @@ public abstract class Animal extends Creature {
      */
     public int move(Direction direction) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        int step = Settings.maxNumbersOfCreatures.get(this.getClass())[2].intValue();
+        int step = Settings.getInstance().getCreatureSettings().get(this.getClass()).get("maxSteps").intValue();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return random.nextInt(step+1);
     }
@@ -120,7 +120,7 @@ public abstract class Animal extends Creature {
     }
 
     protected void decreaseSatiety() {
-        this.satiety = this.satiety - (int) (weight / Settings.maxNumbersOfCreatures.get(this.getClass())[3]);
+        this.satiety = this.satiety - (int) (weight / Settings.getInstance().getCreatureSettings().get(this.getClass()).get("foodWeightForFullSatiety").doubleValue());
         if (satiety < 0) {
             this.die();
             //System.out.println(this.getClass().getSimpleName() + " умер от голода");
@@ -128,7 +128,7 @@ public abstract class Animal extends Creature {
     }
 
     protected Integer getChanceToEat(Creature creature) {
-        return Settings.chanceMap.get(this.getClass()).get(creature.getClass());
+        return Settings.getInstance().getChanceMap().get(this.getClass()).get(creature.getClass());
     }
 
 }

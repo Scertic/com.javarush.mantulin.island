@@ -17,7 +17,7 @@ public abstract class Creature {
     public Creature() {
         uniqueId++;
         this.name = this.getClass().getSimpleName()+uniqueId;
-        this.ico = Settings.icoMap.get(this.getClass());
+        this.ico = Settings.getInstance().getIcoMap().get(this.getClass());
     }
 
     @Override
