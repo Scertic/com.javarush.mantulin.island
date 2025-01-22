@@ -149,10 +149,4 @@ public class Settings {
             //TODO Сделать загрузку настроек по умолчанию
         }
     }
-
-    public static void main(String[] args) {
-        System.out.println(Settings.getInstance().getCreatureSettings());
-        System.out.println(Settings.getInstance().getIcoMap());
-        System.out.println(Settings.getInstance().getChanceMap());
-    }
 }
