@@ -1,0 +1,199 @@
+{
+  "columnsCount": 1,
+  "rowsCount": 1,
+  "creatureSettings": {
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Bear": {
+      "weight": 500,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 80,
+      "maxCountOnLocation": 5
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Eagle": {
+      "weight": 6,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 1,
+      "maxCountOnLocation": 20
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": {
+      "weight": 0.01,
+      "maxSteps": 0,
+      "foodWeightForFullSatiety": 0,
+      "maxCountOnLocation": 1000
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Deer": {
+      "weight": 300,
+      "maxSteps": 4,
+      "foodWeightForFullSatiety": 50,
+      "maxCountOnLocation": 20
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse": {
+      "weight": 400,
+      "maxSteps": 4,
+      "foodWeightForFullSatiety": 60,
+      "maxCountOnLocation": 20
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": {
+      "weight": 1,
+      "maxSteps": 4,
+      "foodWeightForFullSatiety": 0.15,
+      "maxCountOnLocation": 200
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": {
+      "weight": 0.05,
+      "maxSteps": 1,
+      "foodWeightForFullSatiety": 0.1,
+      "maxCountOnLocation": 500
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Boar": {
+      "weight": 400,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 50,
+      "maxCountOnLocation": 50
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Buffalo": {
+      "weight": 700,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 100,
+      "maxCountOnLocation": 10
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Wolf": {
+      "weight": 50,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 8.5,
+      "maxCountOnLocation": 30
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Boa": {
+      "weight": 15,
+      "maxSteps": 1,
+      "foodWeightForFullSatiety": 3,
+      "maxCountOnLocation": 30
+    },
+    "com.javarush.mantulin.island.entity.creature.plant.Plant": {
+      "weight": 1,
+      "maxSteps": 0,
+      "foodWeightForFullSatiety": 0,
+      "maxCountOnLocation": 200
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Sheep": {
+      "weight": 70,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 15,
+      "maxCountOnLocation": 140
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": {
+      "weight": 2,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 0.45,
+      "maxCountOnLocation": 150
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Goat": {
+      "weight": 60,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 10,
+      "maxCountOnLocation": 140
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Fox": {
+      "weight": 8,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 2,
+      "maxCountOnLocation": 30
+    }
+  },
+  "icoMap": {
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Bear": "🐻",
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Eagle": "🦅",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": "🐛",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Deer": "🦌",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse": "🐎",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": "🦆",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": "🐁",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Boar": "🐗",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Buffalo": "🐃",
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Wolf": "🐺",
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Boa": "🐍",
+    "com.javarush.mantulin.island.entity.creature.plant.Plant": "🌿",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Sheep": "🐑",
+    "com.javarush.mantulin.island.entity.creature.Creature": "?",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Goat": "🐐",
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": "🐇",
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Fox": "🦊"
+  },
+  "simCount": 1,
+  "chanceMap": {
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Boar": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": 90,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": 50
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Wolf": {
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Buffalo": 10,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Boar": 15,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Deer": 15,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": 60,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": 80,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Sheep": 70,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": 40,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse": 10,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Goat": 60
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Fox": {
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": 40,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": 70,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": 90,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": 60
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": 90
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Goat": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Buffalo": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Deer": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Boa": {
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": 20,
+      "com.javarush.mantulin.island.entity.creature.animal.predator.Fox": 15,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": 40,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": 10
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Eagle": {
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": 90,
+      "com.javarush.mantulin.island.entity.creature.animal.predator.Fox": 10,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": 90,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": 80
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Caterpillar": 90
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.herbivore.Sheep": {
+      "com.javarush.mantulin.island.entity.creature.plant.Plant": 100
+    },
+    "com.javarush.mantulin.island.entity.creature.animal.predator.Bear": {
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Buffalo": 20,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Boar": 50,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Deer": 80,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Rabbit": 80,
+      "com.javarush.mantulin.island.entity.creature.animal.predator.Boa": 80,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Mouse": 90,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Sheep": 70,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Duck": 10,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Horse": 40,
+      "com.javarush.mantulin.island.entity.creature.animal.herbivore.Goat": 70
+    }
+  }
+}

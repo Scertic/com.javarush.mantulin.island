@@ -1,6 +1,6 @@
 package com.javarush.mantulin.island.entity;
 
-import com.javarush.mantulin.island.Settings;
+import com.javarush.mantulin.island.configuration.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
 import com.javarush.mantulin.island.entity.creature.plant.Plant;

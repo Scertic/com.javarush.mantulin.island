@@ -1,9 +1,8 @@
 package com.javarush.mantulin.island;
 
+import com.javarush.mantulin.island.configuration.Settings;
 import com.javarush.mantulin.island.entity.Island;
 import com.javarush.mantulin.island.entity.Location;
-
-import javax.sound.sampled.FloatControl;
 
 public class Application {
     public static void main(String[] args) {
