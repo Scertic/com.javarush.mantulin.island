@@ -1,6 +1,7 @@
 {
   "columnsCount": 1,
   "rowsCount": 1,
+  "simCount": 5,
   "creatureSettings": {
     "Bear": {
       "weight": 500,
@@ -118,7 +119,7 @@
     "Rabbit": "🐇",
     "Fox": "🦊"
   },
-  "simCount": 1,
+
   "chanceMap": {
     "Boar": {
       "Plant": 100,

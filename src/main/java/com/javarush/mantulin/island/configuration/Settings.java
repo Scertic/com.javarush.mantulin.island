@@ -37,8 +37,8 @@ public class Settings {
         classes.put("Creature", Creature.class);
     }
     private static Settings settings;
-    private final int columnsCount = 1;
-    private final int rowsCount = 1;
+    private int columnsCount;
+    private int rowsCount;
 
     /**
      * Карта соответсвий классов животных и их характеристикам:
@@ -51,7 +51,7 @@ public class Settings {
     private final Map<Class<? extends Creature>, Map<String, Number>> creatureSettings = new HashMap<>();
     @JsonIgnore
     private final Map<Class<? extends  Creature>, String> icoMap = new HashMap<>();
-    private final int simCount = 1; //Количество симуляций
+    private int simCount; //Количество симуляций
     @JsonIgnore
     private final Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> chanceMap = new HashMap<>();
 
@@ -138,6 +138,9 @@ public class Settings {
                 }
                 chanceMap.put(classes.get(entry.getKey()), res);
             }
+            columnsCount = deserializedSettings.getColumnsCount();
+            rowsCount = deserializedSettings.getRowsCount();
+            simCount = deserializedSettings.getSimCount();
 
             creatureSettingsD.clear();
             creatureSettingsD = null;
