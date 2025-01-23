@@ -44,7 +44,12 @@ public abstract class Animal extends Creature {
         if (this instanceof Herbivore) {
             if (creature.getClass() == Plant.class) {
                 increaseSatiety(creature);
-                return creature;
+                if (Double.compare(this.forFullSatiety, Settings.getInstance().getCreatureSettings().get(Plant.class).get("weight").doubleValue()) > 0) {
+                    return creature;
+                } else {
+                    ((Plant) creature).looseWeight(forFullSatiety);
+                    return null;
+                }
             }
         } else if (this instanceof Predator) {
             if (creature instanceof Animal) {

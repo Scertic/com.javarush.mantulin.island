@@ -29,7 +29,7 @@ public class Location implements Runnable{
         lock.lock();
         try {
             if (creaturesOnLocation.contains(creature)) {
-                return true;
+                return false;
             }
             long count = creaturesOnLocation.stream().filter(x -> x.getClass() == creature.getClass()).count();
             if (Double.compare(count, getMaxNumberOfCreature(creature)) < 0) {
@@ -98,7 +98,7 @@ public class Location implements Runnable{
                 }
             }
             //Спавним растение
-           addCreature(new Plant());
+//           addCreature(new Plant());
         }
     }
 
