@@ -29,7 +29,11 @@ public abstract class Animal extends Creature {
 
     public Creature eat(Creature creature) {
         decreaseSatiety();
-        if (this.satiety == 100 || satiety < 0) {
+        if (satiety < 0) {
+            this.die();
+            return null;
+        }
+        if (satiety == 100) {
             return null;
         }
         if (creature == null) {
@@ -39,13 +43,9 @@ public abstract class Animal extends Creature {
         }
         if (this instanceof Herbivore) {
             if (creature.getClass() == Plant.class) {
-                //Убавить у травы "здоровье" на необъодимое количество для насышения животного
-                //либо до 0 если "здоровья" травы не хватает
-                //System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
                 increaseSatiety(creature);
                 return creature;
-                //увеличить сытость текущего животного в соответсвии с количеством съеденного
-            } //иначе убавить сытость и вес ? текущего создания
+            }
         } else if (this instanceof Predator) {
             if (creature instanceof Animal) {
                 if (!((Animal) creature).isAlive) {
@@ -55,7 +55,6 @@ public abstract class Animal extends Creature {
                 Integer chance = getChanceToEat(creature);
                 Random random = new Random();
                 if (random.nextInt(100) + 1 <= chance) {
-                    //System.out.println(this.getClass().getSimpleName() + " eats " + creature.getClass().getSimpleName());
                     increaseSatiety(creature);
                     return creature;
                 }
@@ -98,15 +97,15 @@ public abstract class Animal extends Creature {
 
     /**
      * Метод размножения существ.
-     * @return - возвращает новый экземпляр текущего существа.
+     * @return - возвращает новый экземпляр текущего существа. Возвращет null, если размножение не удалось.
      */
     public Creature reproduce() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         try {
-            decreaseSatiety();
-            if (satiety < 80) {
+            if (satiety < 100) {
                 return null;
             }
+            decreaseSatiety();
             return this.getClass().getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
@@ -123,7 +122,7 @@ public abstract class Animal extends Creature {
         this.satiety = this.satiety - (int) (weight / Settings.getInstance().getCreatureSettings().get(this.getClass()).get("foodWeightForFullSatiety").doubleValue());
         if (satiety < 0) {
             this.die();
-            //System.out.println(this.getClass().getSimpleName() + " умер от голода");
+//            System.out.println(this.getClass().getSimpleName() + " умер от голода");
         }
     }
 
