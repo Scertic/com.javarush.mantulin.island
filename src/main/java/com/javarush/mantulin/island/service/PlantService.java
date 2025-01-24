@@ -24,9 +24,9 @@ public class PlantService implements Runnable {
         for (Location location : locations) {
             location.getLock().lock();
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            for (int i = 0; i < 200/*Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue()*/; i++) {
+            for (int i = 0; i < Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue(); i++) {
                 if (!location.addCreature(new Plant())) {
-                    System.out.println(location.getCreaturesOnLocation().stream().filter(x -> x.getClass() == Plant.class).count());
+                    //System.out.println(location.getCreaturesOnLocation().stream().filter(x -> x.getClass() == Plant.class).count());
                 }
             }
             location.getLock().unlock();

@@ -36,4 +36,36 @@ public class Island {
         }
         return locationList;
     }
+
+    public Location getLocation(int i, int j) {
+        try {
+            return locations[i][j];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    public int getLocationJ(Location location) {
+        for (int i = 0; i < Settings.getInstance().getRowsCount(); i++) {
+            for (int j = 0; j < Settings.getInstance().getColumnsCount(); j++) {
+                if (locations[i][j].equals(location)) {
+                    return j;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public int getLocationI(Location location) {
+        for (int i = 0; i < Settings.getInstance().getRowsCount(); i++) {
+            for (int j = 0; j < Settings.getInstance().getColumnsCount(); j++) {
+                if (locations[i][j].equals(location)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+
 }

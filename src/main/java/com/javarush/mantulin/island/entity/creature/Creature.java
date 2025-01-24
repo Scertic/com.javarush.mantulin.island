@@ -37,4 +37,8 @@ public abstract class Creature {
     public String toString() {
         return ico;
     }
+
+    public String getName() {
+        return name;
+    }
 }

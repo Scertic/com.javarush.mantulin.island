@@ -20,17 +20,18 @@ public class Application {
         long l1 = System.currentTimeMillis();
         System.out.println("Время создания острова: " + (l1 - l));
 
-        ExecutorService executorService = Executors.newFixedThreadPool(12);
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(4);
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         PlantService plantService = new PlantService(island);
-        scheduledExecutorService.scheduleAtFixedRate(plantService,0, 500, TimeUnit.MILLISECONDS);// schedule(plantService, 1, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(plantService,0, 100, TimeUnit.MILLISECONDS);
+
         ReportService reportService = new ReportService(island);
+        ExecutorService executorService = Executors.newFixedThreadPool(12);
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             island.getLocations().forEach(x -> executorService.submit(new LocationAnimalService(island, x)));
+
             executorService.submit(reportService);
         }
-
-//        new Thread(new ReportService(island)).start();
 
         executorService.shutdown();
         if (executorService.isShutdown())
