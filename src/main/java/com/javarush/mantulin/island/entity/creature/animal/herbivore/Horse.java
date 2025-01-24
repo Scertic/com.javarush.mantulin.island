@@ -1,10 +1,14 @@
 package com.javarush.mantulin.island.entity.creature.animal.herbivore;
 
 import com.javarush.mantulin.island.entity.Location;
-import com.javarush.mantulin.island.entity.creature.animal.Animal;
 
-public class Herbivore extends Animal {
-    public Herbivore() {
+public class Horse extends Herbivore{
+    public Horse() {
         super();
+    }
+
+    @Override
+    public String toString() {
+        return "\uD83D\uDC0E";
     }
 }

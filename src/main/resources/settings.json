@@ -1,0 +1,200 @@
+{
+  "columnsCount": 2,
+  "rowsCount": 2,
+  "simCount": 10,
+  "creatureSettings": {
+    "Bear": {
+      "weight": 500,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 80,
+      "maxCountOnLocation": 5
+    },
+    "Eagle": {
+      "weight": 6,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 1,
+      "maxCountOnLocation": 20
+    },
+    "Caterpillar": {
+      "weight": 0.01,
+      "maxSteps": 0,
+      "foodWeightForFullSatiety": 0,
+      "maxCountOnLocation": 1000
+    },
+    "Deer": {
+      "weight": 300,
+      "maxSteps": 4,
+      "foodWeightForFullSatiety": 50,
+      "maxCountOnLocation": 20
+    },
+    "Horse": {
+      "weight": 400,
+      "maxSteps": 4,
+      "foodWeightForFullSatiety": 60,
+      "maxCountOnLocation": 20
+    },
+    "Duck": {
+      "weight": 1,
+      "maxSteps": 4,
+      "foodWeightForFullSatiety": 0.15,
+      "maxCountOnLocation": 200
+    },
+    "Mouse": {
+      "weight": 0.05,
+      "maxSteps": 1,
+      "foodWeightForFullSatiety": 0.1,
+      "maxCountOnLocation": 500
+    },
+    "Boar": {
+      "weight": 400,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 50,
+      "maxCountOnLocation": 50
+    },
+    "Buffalo": {
+      "weight": 700,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 100,
+      "maxCountOnLocation": 10
+    },
+    "Wolf": {
+      "weight": 50,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 8.5,
+      "maxCountOnLocation": 30
+    },
+    "Boa": {
+      "weight": 15,
+      "maxSteps": 1,
+      "foodWeightForFullSatiety": 3,
+      "maxCountOnLocation": 30
+    },
+    "Plant": {
+      "weight": 1,
+      "maxSteps": 0,
+      "foodWeightForFullSatiety": 0,
+      "maxCountOnLocation": 200
+    },
+    "Sheep": {
+      "weight": 70,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 15,
+      "maxCountOnLocation": 140
+    },
+    "Rabbit": {
+      "weight": 2,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 0.45,
+      "maxCountOnLocation": 150
+    },
+    "Goat": {
+      "weight": 60,
+      "maxSteps": 3,
+      "foodWeightForFullSatiety": 10,
+      "maxCountOnLocation": 140
+    },
+    "Fox": {
+      "weight": 8,
+      "maxSteps": 2,
+      "foodWeightForFullSatiety": 2,
+      "maxCountOnLocation": 30
+    }
+  },
+  "icoMap": {
+    "Bear": "🐻",
+    "Eagle": "🦅",
+    "Caterpillar": "🐛",
+    "Deer": "🦌",
+    "Horse": "🐎",
+    "Duck": "🦆",
+    "Mouse": "🐁",
+    "Boar": "🐗",
+    "Buffalo": "🐃",
+    "Wolf": "🐺",
+    "Boa": "🐍",
+    "Plant": "🌿",
+    "Sheep": "🐑",
+    "Creature": "?",
+    "Goat": "🐐",
+    "Rabbit": "🐇",
+    "Fox": "🦊"
+  },
+
+  "chanceMap": {
+    "Boar": {
+      "Plant": 100,
+      "Caterpillar": 90,
+      "Mouse": 50
+    },
+    "Caterpillar": {
+      "Plant": 100
+    },
+    "Rabbit": {
+      "Plant": 100
+    },
+    "Wolf": {
+      "Buffalo": 10,
+      "Boar": 15,
+      "Deer": 15,
+      "Rabbit": 60,
+      "Mouse": 80,
+      "Sheep": 70,
+      "Duck": 40,
+      "Horse": 10,
+      "Goat": 60
+    },
+    "Fox": {
+      "Caterpillar": 40,
+      "Rabbit": 70,
+      "Mouse": 90,
+      "Duck": 60
+    },
+    "Duck": {
+      "Plant": 100,
+      "Caterpillar": 90
+    },
+    "Horse": {
+      "Plant": 100
+    },
+    "Goat": {
+      "Plant": 100
+    },
+    "Buffalo": {
+      "Plant": 100
+    },
+    "Deer": {
+      "Plant": 100
+    },
+    "Boa": {
+      "Rabbit": 20,
+      "Fox": 15,
+      "Mouse": 40,
+      "Duck": 10
+    },
+    "Eagle": {
+      "Rabbit": 90,
+      "Fox": 10,
+      "Mouse": 90,
+      "Duck": 80
+    },
+    "Mouse": {
+      "Plant": 100,
+      "Caterpillar": 90
+    },
+    "Sheep": {
+      "Plant": 100
+    },
+    "Bear": {
+      "Buffalo": 20,
+      "Boar": 50,
+      "Deer": 80,
+      "Rabbit": 80,
+      "Boa": 80,
+      "Mouse": 90,
+      "Sheep": 70,
+      "Duck": 10,
+      "Horse": 40,
+      "Goat": 70
+    }
+  }
+}
