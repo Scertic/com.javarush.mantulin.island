@@ -16,6 +16,9 @@ import java.util.Map;
 
 public class Settings {
 
+    /**
+     * Карта для хранения соотвествия имени и класса.
+     */
     private Map<String, Class<? extends Creature>> classes = new HashMap<>();
     {
         classes.put("Wolf", Wolf.class);

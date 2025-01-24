@@ -18,7 +18,7 @@ public abstract class Animal extends Creature {
 
     double weight;
     public int satiety = 100;
-    private final double forFullSatiety;
+    protected final double forFullSatiety;
     public boolean isAlive = true;
 
     public Animal() {
@@ -84,7 +84,7 @@ public abstract class Animal extends Creature {
      * @return - количество перемещений за раз
      */
     public int move(Direction direction) {
-        // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
+        decreaseSatiety();
         int step = Settings.getInstance().getCreatureSettings().get(this.getClass()).get("maxSteps").intValue();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return random.nextInt(step+1);
@@ -118,7 +118,7 @@ public abstract class Animal extends Creature {
         }
     }
 
-    void die() {
+    protected void die() {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         isAlive = false;
     }

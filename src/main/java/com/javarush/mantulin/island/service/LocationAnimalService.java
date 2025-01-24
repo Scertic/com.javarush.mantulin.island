@@ -4,8 +4,12 @@ import com.javarush.mantulin.island.entity.Island;
 import com.javarush.mantulin.island.entity.Location;
 import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
+import com.javarush.mantulin.island.entity.creature.plant.Plant;
+import com.javarush.mantulin.island.util.Direction;
 
-public class LocationAnimalService implements Runnable{
+import java.util.concurrent.locks.ReentrantLock;
+
+public class LocationAnimalService implements Runnable {
 
     private Island island;
     private Location location;
@@ -28,7 +32,7 @@ public class LocationAnimalService implements Runnable{
                 }
                 //еда
                 Creature creatureToEat = location.findCreatureToEat(animal);
-                if(animal.eat(creatureToEat) != null) {
+                if (animal.eat(creatureToEat) != null) {
                     location.getLock().lock();
                     location.removeCreature(creatureToEat);
                     location.getLock().unlock();
@@ -43,16 +47,71 @@ public class LocationAnimalService implements Runnable{
                         location.addCreature(reproduce);
                         location.getLock().unlock();
                     }
-
+                }
+                //перемещение
+                Direction direction = ((Animal) creature).chooseDirection();
+                int step = ((Animal) creature).move(direction);
+                if (step > 0) {
+                    //move(direction, step, creature);
+                    if (direction == Direction.RIGHT) {
+                        Location location1 = null;
+                        int locationI = island.getLocationI(location);
+                        int locationJ = island.getLocationJ(location);
+                        location1 = island.getLocation(locationI, locationJ + step);
+                        if (location1 == null) {
+                            continue;
+                        }
+                        location1.getLock().lock();
+                        location1.addCreature(creature);
+                        location1.getLock().unlock();
+                    }
+                    if (direction == Direction.LEFT) {
+                        Location location1 = null;
+                        int locationI = island.getLocationI(location);
+                        int locationJ = island.getLocationJ(location);
+                        location1 = island.getLocation(locationI, locationJ - step);
+                        if (location1 == null) {
+                            continue;
+                        }
+                        location1.getLock().lock();
+                        location1.addCreature(creature);
+                        location1.getLock().unlock();
+                    }
+                    if (direction == Direction.UP) {
+                        Location location1 = null;
+                        int locationI = island.getLocationI(location);
+                        int locationJ = island.getLocationJ(location);
+                        location1 = island.getLocation(locationI - step, locationJ);
+                        if (location1 == null) {
+                            continue;
+                        }
+                        location1.getLock().lock();
+                        location1.addCreature(creature);
+                        location1.getLock().unlock();
+                    }
+                    if (direction == Direction.DOWN) {
+                        Location location1 = null;
+                        int locationI = island.getLocationI(location);
+                        int locationJ = island.getLocationJ(location);
+                        location1 = island.getLocation(locationI + step, locationJ);
+                        if (location1 == null) {
+                            continue;
+                        }
+                        location1.getLock().lock();
+                        location1.addCreature(creature);
+                        location1.getLock().unlock();
+                    }
                 }
             }
-            //Спавним растение
-//           addCreature(new Plant());
         }
     }
 
     @Override
     public void run() {
-        simulateLifeCycle();
+        try {
+            simulateLifeCycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

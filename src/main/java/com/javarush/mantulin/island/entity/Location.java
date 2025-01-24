@@ -90,7 +90,7 @@ public class Location {
      * @return - истина если удаление произошло успешно, и ложь, если нет.
      */
     public boolean removeCreature(Creature creature) {
-        lock.lock();
+//        lock.lock();
         try {
             if (creaturesOnLocation.contains(creature)) {
                 creaturesOnLocation.remove(creature);
@@ -98,7 +98,7 @@ public class Location {
             }
             return false;
         } finally {
-            lock.unlock();
+//            lock.unlock();
         }
     }
 
@@ -137,5 +137,18 @@ public class Location {
 
     public Map<String, Long> getCreatureGroupBy() {
         return creaturesOnLocation.stream().collect(Collectors.groupingBy(Creature::toString, Collectors.counting()));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equals(name, location.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
