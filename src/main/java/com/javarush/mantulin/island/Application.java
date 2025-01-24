@@ -3,6 +3,7 @@ package com.javarush.mantulin.island;
 import com.javarush.mantulin.island.configuration.Settings;
 import com.javarush.mantulin.island.entity.Island;
 import com.javarush.mantulin.island.entity.Location;
+import com.javarush.mantulin.island.service.LocationAnimalService;
 import com.javarush.mantulin.island.service.PlantService;
 import com.javarush.mantulin.island.service.ReportService;
 
@@ -25,7 +26,7 @@ public class Application {
         scheduledExecutorService.scheduleAtFixedRate(plantService,0, 500, TimeUnit.MILLISECONDS);// schedule(plantService, 1, TimeUnit.MILLISECONDS);
         ReportService reportService = new ReportService(island);
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
-            island.getLocations().forEach(executorService::submit);
+            island.getLocations().forEach(x -> executorService.submit(new LocationAnimalService(island, x)));
             executorService.submit(reportService);
         }
 

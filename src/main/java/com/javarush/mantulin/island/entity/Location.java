@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-public class Location implements Runnable{
+public class Location {
 
     //Список всех созданий в локации
     private final List<Creature> creaturesOnLocation = new CopyOnWriteArrayList<>();
@@ -74,33 +74,7 @@ public class Location implements Runnable{
     // ЛОКАЦИЮ ТОЖЕ НУЖНО ПРАВИЛЬНО СОЗДАТЬ -
     // ИНИЦИАЛИЗИРОВАВ ЕЕ НА СТАРТЕ КАКИМ-ТО КОЛ-ВОМ ЖИВОТНЫХ И РАСТЕНИЙ
 
-    private void simulateLifeCycle() {
 
-        for (Creature creature : creaturesOnLocation) {
-            if (creature instanceof Animal animal) {
-                //проверяем на смерть
-                if (!animal.isAlive) {
-                    removeCreature(animal);
-                    continue;
-                }
-                //еда
-                Creature creatureToEat = findCreatureToEat(animal);
-                if(animal.eat(creatureToEat) != null) {
-                    removeCreature(creatureToEat);
-                }
-                //размножение
-                if (creaturesOnLocation.stream().filter(x -> x.getClass() == animal.getClass()).count() > 1) {
-                    Creature reproduce = animal.reproduce();
-                    if (reproduce != null) {
-                        addCreature(reproduce);
-                    }
-
-                }
-            }
-            //Спавним растение
-//           addCreature(new Plant());
-        }
-    }
 
     /**
      * Возвращает множество существ на локации
@@ -159,12 +133,6 @@ public class Location implements Runnable{
 
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void run() {
-        //TODO Управление днем отдать острову
-            simulateLifeCycle();
     }
 
     public Map<String, Long> getCreatureGroupBy() {
