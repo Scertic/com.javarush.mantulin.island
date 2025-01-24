@@ -19,15 +19,12 @@ public class PlantService implements Runnable {
 
     @Override
     public void run() {
-        //TODO Растения растут или как?
         System.out.println("Запуск");
         for (Location location : locations) {
             location.getLock().lock();
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            for (int i = 0; i < Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue(); i++) {
-                if (!location.addCreature(new Plant())) {
-                    //System.out.println(location.getCreaturesOnLocation().stream().filter(x -> x.getClass() == Plant.class).count());
-                }
+            for (int i = 0; i < random.nextInt(Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue()); i++) {
+                location.addCreature(new Plant());
             }
             location.getLock().unlock();
         }
