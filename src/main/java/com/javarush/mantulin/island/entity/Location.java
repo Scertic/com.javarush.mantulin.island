@@ -164,15 +164,7 @@ public class Location implements Runnable{
     @Override
     public void run() {
         //TODO Управление днем отдать острову
-//        System.out.println(getName() + " Day-" + 0);
-//        System.out.println(getCreatureGroupBy());
-//        for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
-//            System.out.println(getName() + " Day-" + (i+1));
             simulateLifeCycle();
-//            System.out.println(getCreatureGroupBy());
-//            if (getCreatureGroupBy().keySet().size() == 1)
-//                break;
-//        }
     }
 
     public Map<String, Long> getCreatureGroupBy() {
