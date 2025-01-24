@@ -57,6 +57,9 @@ public class LocationAnimalService implements Runnable {
                         Location location1 = null;
                         int locationI = island.getLocationI(location);
                         int locationJ = island.getLocationJ(location);
+                        if (locationI == -1 || locationJ == -1) {
+                            continue;
+                        }
                         location1 = island.getLocation(locationI, locationJ + step);
                         if (location1 == null) {
                             continue;
@@ -69,6 +72,9 @@ public class LocationAnimalService implements Runnable {
                         Location location1 = null;
                         int locationI = island.getLocationI(location);
                         int locationJ = island.getLocationJ(location);
+                        if (locationI == -1 || locationJ == -1) {
+                            continue;
+                        }
                         location1 = island.getLocation(locationI, locationJ - step);
                         if (location1 == null) {
                             continue;
@@ -81,6 +87,9 @@ public class LocationAnimalService implements Runnable {
                         Location location1 = null;
                         int locationI = island.getLocationI(location);
                         int locationJ = island.getLocationJ(location);
+                        if (locationI == -1 || locationJ == -1) {
+                            continue;
+                        }
                         location1 = island.getLocation(locationI - step, locationJ);
                         if (location1 == null) {
                             continue;
@@ -93,6 +102,9 @@ public class LocationAnimalService implements Runnable {
                         Location location1 = null;
                         int locationI = island.getLocationI(location);
                         int locationJ = island.getLocationJ(location);
+                        if (locationI == -1 || locationJ == -1) {
+                            continue;
+                        }
                         location1 = island.getLocation(locationI + step, locationJ);
                         if (location1 == null) {
                             continue;
