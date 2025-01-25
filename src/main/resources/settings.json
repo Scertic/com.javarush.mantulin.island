@@ -1,7 +1,7 @@
 {
-  "columnsCount": 2,
-  "rowsCount": 2,
   "simCount": 25,
+  "rowsCount": 2,
+  "columnsCount": 2,
   "creatureSettings": {
     "Bear": {
       "weight": 500,
