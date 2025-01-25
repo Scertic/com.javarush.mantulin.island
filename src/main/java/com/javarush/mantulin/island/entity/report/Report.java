@@ -21,7 +21,12 @@ public class Report {
         List<Map<String, Long>> report = new ArrayList<>(Settings.getInstance().getColumnsCount()*Settings.getInstance().getRowsCount());
         List<Location> locations = island.getLocations();
         for (Location location : locations) {
-            report.add(location.getCreatureGroupBy());
+            location.getLock().lock();
+            try {
+                report.add(location.getCreatureGroupBy());
+            } finally {
+                location.getLock().unlock();
+            }
         }
 
         return report;

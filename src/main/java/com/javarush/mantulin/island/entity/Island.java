@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Класс острова.
+ */
 public class Island {
 
     private int columnsCount;
@@ -21,14 +24,21 @@ public class Island {
         System.out.println("Количество дней симуляции: " + Settings.getInstance().getSimCount());
     }
 
+    /**
+     *Метод создания локаций в массиве локаций острова.
+     */
     private void initIslandLocations() {
-        for (int i = 0; i < Settings.getInstance().getRowsCount(); i++) {
-            for (int j = 0; j < Settings.getInstance().getColumnsCount(); j++) {
+        for (int i = 0; i < rowsCount; i++) {
+            for (int j = 0; j < columnsCount; j++) {
                 this.locations[i][j] = new Location();
             }
         }
     }
 
+    /**
+     * Метод получения всех локаций.
+     * @return - возвращает лист локаций.
+     */
     public List<Location> getLocations() {
         ArrayList<Location> locationList = new ArrayList<>(locations.length);
         for (int i = 0; i < this.locations.length; i++) {
@@ -37,6 +47,12 @@ public class Island {
         return locationList;
     }
 
+    /**
+     * Метод получения локации по "координатам" двумерного массива.
+     * @param i - номер строки
+     * @param j - номер колонки
+     * @return - Возвращает локацию, существующую по "координатам" двумерного массива, в противном случае возвращает null.
+     */
     public Location getLocation(int i, int j) {
         try {
             return locations[i][j];
@@ -45,6 +61,11 @@ public class Island {
         }
     }
 
+    /**
+     * Метод получения "координаты" j массива локаций
+     * @param location - запрашиваемая локация
+     * @return - возвращет j локации, в противном случае возвращает "-1"
+     */
     public int getLocationJ(Location location) {
         for (int i = 0; i < Settings.getInstance().getRowsCount(); i++) {
             for (int j = 0; j < Settings.getInstance().getColumnsCount(); j++) {
@@ -56,6 +77,11 @@ public class Island {
         return -1;
     }
 
+    /**
+     * Метод получения "координаты" i массива локаций
+     * @param location - запрашиваемая локация
+     * @return - возвращет i локации, в противном случае возвращает "-1"
+     */
     public int getLocationI(Location location) {
         for (int i = 0; i < Settings.getInstance().getRowsCount(); i++) {
             for (int j = 0; j < Settings.getInstance().getColumnsCount(); j++) {

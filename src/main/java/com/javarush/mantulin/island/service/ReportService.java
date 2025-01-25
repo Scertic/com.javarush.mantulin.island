@@ -3,6 +3,9 @@ package com.javarush.mantulin.island.service;
 import com.javarush.mantulin.island.entity.Island;
 import com.javarush.mantulin.island.entity.report.Report;
 
+/**
+ * Класс для вывода отчетов.
+ */
 public class ReportService implements Runnable{
     private final Report report;
     private static int day = 1;
@@ -13,8 +16,12 @@ public class ReportService implements Runnable{
     @Override
     public void run() {
         report.reportLocck.lock();
-        System.out.println("День симуляции: " + day++);
-        System.out.println(report.getReport());
-        report.reportLocck.unlock();
+        try {
+            System.out.println("День симуляции: " + day++);
+            System.out.println(report.getReport());
+        } finally {
+            report.reportLocck.unlock();
+        }
+
     }
 }

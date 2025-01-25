@@ -2,9 +2,7 @@ package com.javarush.mantulin.island.entity;
 
 import com.javarush.mantulin.island.configuration.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
-import com.javarush.mantulin.island.entity.creature.animal.Animal;
-import com.javarush.mantulin.island.entity.creature.plant.Plant;
-import com.javarush.mantulin.island.util.CreatureFactory;
+import com.javarush.mantulin.island.repository.CreatureFactory;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -12,16 +10,19 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+/**
+ * Класс локации.
+ */
 public class Location {
 
-    //Список всех созданий в локации
-    private final List<Creature> creaturesOnLocation = new CopyOnWriteArrayList<>();
+    private final List<Creature> creaturesOnLocation = new CopyOnWriteArrayList<>(); //Список всех созданий в локации
     private final ReentrantLock lock;
-    private static int locationID;
-    private String name;
+    private static int locationID; //уникальный номер локации
+    private String name; //Имя локации
 
     /**
      * Метод для добавления создания.
+     *
      * @param creature - существо для добавления
      * @return true - при успешном добавлении создания в карту, false - если количество созданий превышает допустимую норму.
      */
@@ -43,7 +44,8 @@ public class Location {
     }
 
     /**
-     * Метод поиска максимального количества допустимых созданий в локации.
+     * Метод поиска максимального количества допустимых созданий в локации из настроек.
+     *
      * @param creature - существо для поиска
      * @return - максимальное количество созданий данного вида в локации.
      * Возвращает 0, если такого создания не нашлось в настройках.
@@ -59,7 +61,7 @@ public class Location {
         for (Class<? extends Creature> aClass : Settings.getInstance().getCreatureSettings().keySet()) {
             ThreadLocalRandom random = ThreadLocalRandom.current();
             int count = Settings.getInstance().getCreatureSettings().get(aClass).get("maxCountOnLocation").intValue();
-            int maxRandom = random.nextInt(count)+1;
+            int maxRandom = random.nextInt(count) + 1;
             for (int i = 0; i < maxRandom; i++) {
                 creatureList.add(factory.getCreature(aClass));
             }
@@ -68,16 +70,12 @@ public class Location {
         creaturesOnLocation.addAll(creatureList);
         lock = new ReentrantLock();
         locationID++;
-        name = "Location-"+locationID;
+        name = "Location-" + locationID;
     }
-
-    // ЛОКАЦИЮ ТОЖЕ НУЖНО ПРАВИЛЬНО СОЗДАТЬ -
-    // ИНИЦИАЛИЗИРОВАВ ЕЕ НА СТАРТЕ КАКИМ-ТО КОЛ-ВОМ ЖИВОТНЫХ И РАСТЕНИЙ
-
-
 
     /**
      * Возвращает множество существ на локации
+     *
      * @return - множество существ на локации
      */
     public Set<Creature> getCreaturesOnLocation() {
@@ -86,24 +84,21 @@ public class Location {
 
     /**
      * Метод удаления существа с локации.
+     *
      * @param creature удаляемое существо
      * @return - истина если удаление произошло успешно, и ложь, если нет.
      */
     public boolean removeCreature(Creature creature) {
-//        lock.lock();
-        try {
-            if (creaturesOnLocation.contains(creature)) {
-                creaturesOnLocation.remove(creature);
-                return true;
-            }
-            return false;
-        } finally {
-//            lock.unlock();
+        if (creaturesOnLocation.contains(creature)) {
+            creaturesOnLocation.remove(creature);
+            return true;
         }
+        return false;
     }
 
     /**
      * Поиск создания для еды другого создания.
+     *
      * @param creature - создание для которого осуществляется поиск
      * @return - создание, которое может съесть создание из входного параметра
      */
@@ -120,7 +115,7 @@ public class Location {
         }
         Collections.shuffle(myFavoriteCreature);
         for (Creature creature1 : creaturesNearby) {
-            if(myFavoriteCreature.contains(creature1.getClass())) {
+            if (myFavoriteCreature.contains(creature1.getClass())) {
                 return creature1;
             }
         }

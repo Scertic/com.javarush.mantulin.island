@@ -15,16 +15,7 @@ public class Plant extends Creature {
         weight -= eaten;
     }
 
-    public void risingWeight() {
-        weight = Settings.getInstance().getCreatureSettings().get(this.getClass()).get("maxCountOnLocation").doubleValue();
-    }
-
     public double getWeight() {
         return weight;
-    }
-
-    @Override
-    public String toString() {
-        return "\uD83C\uDF3F";
     }
 }
