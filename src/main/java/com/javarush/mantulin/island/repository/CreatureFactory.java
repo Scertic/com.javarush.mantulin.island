@@ -1,4 +1,4 @@
-package com.javarush.mantulin.island.util;
+package com.javarush.mantulin.island.repository;
 
 import com.javarush.mantulin.island.configuration.Settings;
 import com.javarush.mantulin.island.entity.creature.Creature;
@@ -15,13 +15,13 @@ public class CreatureFactory {
      * Метод для получения экземпляра существа определенного класса.
      * Метод требует конструктор по умолчанию.
      * @param creatureClass - класс существа
-     * @return - существо
+     * @return - существо или null при неудаче.
      */
     public Creature getCreature(Class<? extends Creature> creatureClass) {
         try {
             return creatureClass.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 

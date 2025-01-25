@@ -8,6 +8,9 @@ import com.javarush.mantulin.island.entity.creature.plant.Plant;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Класс роста растений на локации.
+ */
 public class PlantService implements Runnable {
     private Island island;
     List<Location> locations;
@@ -22,11 +25,15 @@ public class PlantService implements Runnable {
         System.out.println("Запуск");
         for (Location location : locations) {
             location.getLock().lock();
-            ThreadLocalRandom random = ThreadLocalRandom.current();
-            for (int i = 0; i < random.nextInt(Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue()); i++) {
-                location.addCreature(new Plant());
+            try {
+                ThreadLocalRandom random = ThreadLocalRandom.current();
+                for (int i = 0; i < random.nextInt(Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue()); i++) {
+                    location.addCreature(new Plant());
+                }
+            } finally {
+                location.getLock().unlock();
             }
-            location.getLock().unlock();
+
         }
     }
 }

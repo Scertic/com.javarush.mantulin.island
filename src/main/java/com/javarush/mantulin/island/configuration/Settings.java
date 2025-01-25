@@ -40,8 +40,8 @@ public class Settings {
         classes.put("Creature", Creature.class);
     }
     private static Settings settings;
-    private int columnsCount;
-    private int rowsCount;
+    private int columnsCount; //Количество колонок в матрице (j)
+    private int rowsCount; //Количество строк в матрице (i)
 
     /**
      * Карта соответсвий классов животных и их характеристикам:
@@ -53,15 +53,15 @@ public class Settings {
     @JsonIgnore
     private final Map<Class<? extends Creature>, Map<String, Number>> creatureSettings = new HashMap<>();
     @JsonIgnore
-    private final Map<Class<? extends  Creature>, String> icoMap = new HashMap<>();
+    private final Map<Class<? extends  Creature>, String> icoMap = new HashMap<>(); //Карта иконок
     private int simCount; //Количество симуляций
     @JsonIgnore
-    private final Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> chanceMap = new HashMap<>();
+    private final Map<Class<? extends Creature>, Map<Class<? extends Creature>, Integer>> chanceMap = new HashMap<>(); //Карта шансов еды
 
 
-    private Map<String, Map<String, Number>> creatureSettingsD = new HashMap<>();
-    private Map<String, String> icoMapD = new HashMap<>();
-    private Map<String, Map<String, Integer>> chanceMapD = new HashMap<>();
+    private Map<String, Map<String, Number>> creatureSettingsD = new HashMap<>(); //Карта существ для десериализации
+    private Map<String, String> icoMapD = new HashMap<>(); //Карта иконок для десериализации
+    private Map<String, Map<String, Integer>> chanceMapD = new HashMap<>(); //Карта шансов еды для десериализации
 
     private Settings() {
     }
@@ -113,8 +113,9 @@ public class Settings {
         return new HashMap<>(chanceMapD);
     }
 
-
-
+    /**
+     * Метод загрузки данных из файла нстроек json
+     */
     private void loadSettings() {
         ObjectMapper objectMapper = new ObjectMapper();
         String resourcePath = "settings.json";
