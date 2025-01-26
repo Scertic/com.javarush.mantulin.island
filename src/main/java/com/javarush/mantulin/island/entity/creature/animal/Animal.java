@@ -8,8 +8,6 @@ import com.javarush.mantulin.island.entity.creature.plant.Plant;
 import com.javarush.mantulin.island.repository.CreatureFactory;
 import com.javarush.mantulin.island.util.Direction;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -53,7 +51,7 @@ public abstract class Animal extends Creature {
                 if (Double.compare(this.forFullSatiety, Settings.getInstance().getCreatureSettings().get(Plant.class).get("weight").doubleValue()) > 0) {
                     return creature;
                 } else {
-                    ((Plant) creature).looseWeight(forFullSatiety);
+                    ((Plant) creature).looseWeight(this.forFullSatiety);
                     return null;
                 }
             }

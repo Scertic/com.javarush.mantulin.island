@@ -23,10 +23,10 @@ public class Application {
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         PlantService plantService = new PlantService(island);
-        scheduledExecutorService.scheduleAtFixedRate(plantService,0, 100, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(plantService, 0, 1, TimeUnit.SECONDS);
 
         ReportService reportService = new ReportService(island);
-        ExecutorService executorService = Executors.newFixedThreadPool(12);
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             island.getLocations().forEach(x -> executorService.submit(new LocationAnimalService(island, x)));
 
@@ -34,9 +34,14 @@ public class Application {
         }
 
         executorService.shutdown();
-        if (executorService.isShutdown())
-            scheduledExecutorService.shutdown();
-
+        while (!executorService.isTerminated()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        scheduledExecutorService.shutdown();
 
     }
 

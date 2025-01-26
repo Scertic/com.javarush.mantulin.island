@@ -22,15 +22,20 @@ public class PlantService implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Запуск");
         for (Location location : locations) {
             location.getLock().lock();
             try {
                 ThreadLocalRandom random = ThreadLocalRandom.current();
-                for (int i = 0; i < random.nextInt(Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue()); i++) {
-                    location.addCreature(new Plant());
+                int rand = random.nextInt(Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue());
+                for (int i = 0; i < rand; i++) {
+                    if (!location.addCreature(new Plant())) {
+                        break;
+                    }
                 }
-            } finally {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
                 location.getLock().unlock();
             }
 

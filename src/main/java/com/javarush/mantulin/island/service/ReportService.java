@@ -8,7 +8,7 @@ import com.javarush.mantulin.island.entity.report.Report;
  */
 public class ReportService implements Runnable{
     private final Report report;
-    private static int day = 1;
+    private int day = 1;
     public ReportService(Island island) {
         report = new Report(island);
     }
