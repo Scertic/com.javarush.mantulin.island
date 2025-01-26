@@ -12,12 +12,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * Класс роста растений на локации.
  */
 public class PlantService implements Runnable {
-    private Island island;
     List<Location> locations;
+    private final int maxPlantOnLocation;
 
     public PlantService(Island island) {
-        this.island = island;
-        locations = island.getLocations();
+        this.locations = island.getLocations();
+        this.maxPlantOnLocation = Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue();
     }
 
     @Override
@@ -26,7 +26,7 @@ public class PlantService implements Runnable {
             location.getLock().lock();
             try {
                 ThreadLocalRandom random = ThreadLocalRandom.current();
-                int rand = random.nextInt(Settings.getInstance().getCreatureSettings().get(Plant.class).get("maxCountOnLocation").intValue());
+                int rand = random.nextInt(maxPlantOnLocation);
                 for (int i = 0; i < rand; i++) {
                     if (!location.addCreature(new Plant())) {
                         break;
