@@ -2,6 +2,7 @@ package com.javarush.mantulin.island;
 
 import com.javarush.mantulin.island.configuration.Settings;
 import com.javarush.mantulin.island.entity.Island;
+import com.javarush.mantulin.island.entity.report.IslandReport;
 import com.javarush.mantulin.island.service.LocationAnimalService;
 import com.javarush.mantulin.island.service.PlantService;
 import com.javarush.mantulin.island.service.ReportService;
@@ -24,7 +25,7 @@ public class Application {
         PlantService plantService = new PlantService(island);
         scheduledExecutorService.scheduleWithFixedDelay(plantService, 0, 1, TimeUnit.SECONDS);
 
-        ReportService reportService = new ReportService(island);
+        ReportService reportService = new ReportService(new IslandReport(island));
         ExecutorService executorService = Executors.newFixedThreadPool(8);
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             List<Future<?>> futureList = new ArrayList<>();

@@ -28,7 +28,6 @@ public class Report {
                 location.getLock().unlock();
             }
         }
-
         return report;
     }
 }

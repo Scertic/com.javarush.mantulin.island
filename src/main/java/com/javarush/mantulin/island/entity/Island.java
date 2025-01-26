@@ -11,12 +11,12 @@ import java.util.List;
  */
 public class Island {
 
-    private int columnsCount;
-    private int rowsCount;
+    private final int columnsCount;
+    private final int rowsCount;
     public Location[][] locations;
 
     public Island(int rowsCount, int columnsCount) {
-        System.out.println("Создаем остров");
+        System.out.println("Создаем остров " + rowsCount + "x" + columnsCount);
         this.columnsCount = columnsCount;
         this.rowsCount = rowsCount;
         locations = new Location[rowsCount][columnsCount];

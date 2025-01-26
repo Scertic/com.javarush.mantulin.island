@@ -1,6 +1,5 @@
 package com.javarush.mantulin.island.service;
 
-import com.javarush.mantulin.island.entity.Island;
 import com.javarush.mantulin.island.entity.report.Report;
 
 /**
@@ -9,8 +8,8 @@ import com.javarush.mantulin.island.entity.report.Report;
 public class ReportService implements Runnable{
     private final Report report;
     private int day = 1;
-    public ReportService(Island island) {
-        report = new Report(island);
+    public ReportService(Report report) {
+        this.report = report;
     }
 
     @Override
