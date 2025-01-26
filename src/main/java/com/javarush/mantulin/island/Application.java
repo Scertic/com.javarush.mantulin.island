@@ -17,6 +17,7 @@ public class Application {
         Island island = new Island(Settings.getInstance().getRowsCount(), Settings.getInstance().getColumnsCount());
         long l1 = System.currentTimeMillis();
         System.out.println("Время создания острова: " + (l1 - l));
+        l = System.currentTimeMillis();
 
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -24,13 +25,18 @@ public class Application {
         scheduledExecutorService.scheduleWithFixedDelay(plantService, 0, 1, TimeUnit.SECONDS);
 
         ReportService reportService = new ReportService(island);
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             List<Future<?>> futureList = new ArrayList<>();
             island.getLocations().forEach(x -> futureList.add(executorService.submit(new LocationAnimalService(island, x))));
             if (!futureList.isEmpty()) {
+                int dotCount = 3;
                 while (!futureList.get(futureList.size()-1).isDone()) {
                     try {
+                        System.out.print("\rwaiting" + ".".repeat(dotCount));
+                        if (dotCount++ == 3) {
+                            dotCount = 0;
+                        }
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -43,13 +49,15 @@ public class Application {
         executorService.shutdown();
         while (!executorService.isTerminated()) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
         scheduledExecutorService.shutdown();
 
+        l1 = System.currentTimeMillis();
+        System.out.println("Время симуляции: " + (l1 - l)/1000 + " секунд.");
     }
 
 }
