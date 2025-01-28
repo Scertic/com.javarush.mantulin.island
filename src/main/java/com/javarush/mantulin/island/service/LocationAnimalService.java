@@ -6,6 +6,8 @@ import com.javarush.mantulin.island.entity.creature.Creature;
 import com.javarush.mantulin.island.entity.creature.animal.Animal;
 import com.javarush.mantulin.island.util.Direction;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Класс для запуска дня на острове.
  */
@@ -28,22 +30,22 @@ public class LocationAnimalService implements Runnable {
             if (creature instanceof Animal animal) {
                 //проверяем на смерть
                 if (!animal.isAlive) {
-                    location.getLock().lock();
+//                    location.getLock().lock();
                     try {
                         location.removeCreature(animal);
                     } finally {
-                        location.getLock().unlock();
+//                        location.getLock().unlock();
                     }
                     continue;
                 }
                 //еда
                 Creature creatureToEat = location.findCreatureToEat(animal);
                 if (animal.eat(creatureToEat) != null) {
-                    location.getLock().lock();
+//                    location.getLock().lock();
                     try {
                         location.removeCreature(creatureToEat);
                     } finally {
-                        location.getLock().unlock();
+//                        location.getLock().unlock();
                     }
                 }
                 //размножение
@@ -52,13 +54,13 @@ public class LocationAnimalService implements Runnable {
                         .count() > 1) {
                     Creature reproduce = animal.reproduce();
                     if (reproduce != null) {
-                        location.getLock().lock();
+//                        location.getLock().lock();
                         try {
                             if (!location.addCreature(reproduce)) {
                                 reproduce = null;
                             }
                         } finally {
-                            location.getLock().unlock();
+//                            location.getLock().unlock();
                         }
                     }
                 }
@@ -85,11 +87,22 @@ public class LocationAnimalService implements Runnable {
                     if (location1 == null) {
                         continue;
                     }
-                    location1.getLock().lock();
+
+                    Location firstLocation = location.getName().compareTo(location1.getName()) < 0 ? location : location1;
+                    Location secondLocation = firstLocation == location ? location1 : location;
+
+                    firstLocation.getLock().lock();
                     try {
-                        location1.addCreature(creature);
+                        secondLocation.getLock().lock();
+                        try {
+                            if (location1.addCreature(creature)) {
+                                location.removeCreature(creature);
+                            }
+                        } finally {
+                            secondLocation.getLock().unlock();
+                        }
                     } finally {
-                        location1.getLock().unlock();
+                        firstLocation.getLock().unlock();
                     }
                 }
             }

@@ -90,11 +90,16 @@ public class Location {
      * @return - истина если удаление произошло успешно, и ложь, если нет.
      */
     public boolean removeCreature(Creature creature) {
-        if (creaturesOnLocation.contains(creature)) {
-            creaturesOnLocation.remove(creature);
-            return true;
+        lock.lock();
+        try {
+            if (creaturesOnLocation.contains(creature)) {
+                creaturesOnLocation.remove(creature);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.unlock();
         }
-        return false;
     }
 
     /**
