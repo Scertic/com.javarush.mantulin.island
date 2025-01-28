@@ -27,18 +27,19 @@ public class Application {
 
         ReportService reportService = new ReportService(new IslandReport(island));
         ExecutorService executorService = Executors.newFixedThreadPool(8);
+        List<LocationAnimalService> locationAnimalServices = new ArrayList<>();
+        island.getLocations().parallelStream()
+                .forEach(x -> locationAnimalServices.add(new LocationAnimalService(island, x)));
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             List<Future<?>> futureList = new ArrayList<>();
+            //locationAnimalServices.forEach(x -> futureList.add(executorService.submit(x)));
             island.getLocations().forEach(x -> futureList.add(executorService.submit(new LocationAnimalService(island, x))));
             if (!futureList.isEmpty()) {
-                int dotCount = 3;
                 while (!futureList.get(futureList.size()-1).isDone()) {
                     try {
-                        System.out.print("\rwaiting" + ".".repeat(dotCount));
-                        if (dotCount++ == 3) {
-                            dotCount = 0;
-                        }
-                        Thread.sleep(500);
+                        long count = futureList.stream().filter(Future::isDone).count();
+                        System.out.print("\rwaiting " + ((count * 100)/island.getLocationCount()) + "%");
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

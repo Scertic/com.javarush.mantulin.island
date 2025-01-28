@@ -78,9 +78,10 @@ public class Location {
      *
      * @return - множество существ на локации
      */
-    public Set<Creature> getCreaturesOnLocation() {
-        return new HashSet<>(creaturesOnLocation);
+    public List<Creature> getCreaturesOnLocation() {
+        return creaturesOnLocation;
     }
+
 
     /**
      * Метод удаления существа с локации.
@@ -103,7 +104,7 @@ public class Location {
      * @return - создание, которое может съесть создание из входного параметра
      */
     public Creature findCreatureToEat(Creature creature) {
-        Set<Creature> creaturesNearby = getCreaturesOnLocation();
+        List<Creature> creaturesNearby = getCreaturesOnLocation();
         Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.getInstance().getChanceMap().get(creature.getClass());
         if (classIntegerMap == null) {
             return null;

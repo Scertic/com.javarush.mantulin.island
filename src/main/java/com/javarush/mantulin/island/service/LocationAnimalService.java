@@ -11,12 +11,16 @@ import com.javarush.mantulin.island.util.Direction;
  */
 public class LocationAnimalService implements Runnable {
 
-    private Island island;
-    private Location location;
+    private final Island island;
+    private final Location location;
+    private final int locationI;
+    private final int locationJ;
 
     public LocationAnimalService(Island island, Location location) {
         this.island = island;
         this.location = location;
+        this.locationI = island.getLocationI(location);
+        this.locationJ = island.getLocationJ(location);
     }
 
     private void simulateLifeCycle() {
@@ -50,7 +54,9 @@ public class LocationAnimalService implements Runnable {
                     if (reproduce != null) {
                         location.getLock().lock();
                         try {
-                            location.addCreature(reproduce);
+                            if (!location.addCreature(reproduce)) {
+                                reproduce = null;
+                            }
                         } finally {
                             location.getLock().unlock();
                         }
@@ -60,62 +66,30 @@ public class LocationAnimalService implements Runnable {
                 Direction direction = ((Animal) creature).chooseDirection();
                 int step = ((Animal) creature).move(direction);
                 if (step > 0) {
-                    int locationI = island.getLocationI(location);
-                    int locationJ = island.getLocationJ(location);
+                    Location location1 = null;
                     if (locationI == -1 || locationJ == -1) {
                         continue;
                     }
                     if (direction == Direction.RIGHT) {
-                        Location location1 = null;
                         location1 = island.getLocation(locationI, locationJ + step);
-                        if (location1 == null) {
-                            continue;
-                        }
-                        location1.getLock().lock();
-                        try {
-                            location1.addCreature(creature);
-                        } finally {
-                            location1.getLock().unlock();
-                        }
                     }
                     if (direction == Direction.LEFT) {
-                        Location location1 = null;
                         location1 = island.getLocation(locationI, locationJ - step);
-                        if (location1 == null) {
-                            continue;
-                        }
-                        location1.getLock().lock();
-                        try {
-                            location1.addCreature(creature);
-                        } finally {
-                            location1.getLock().unlock();
-                        }
                     }
                     if (direction == Direction.UP) {
-                        Location location1 = null;
                         location1 = island.getLocation(locationI - step, locationJ);
-                        if (location1 == null) {
-                            continue;
-                        }
-                        location1.getLock().lock();
-                        try {
-                            location1.addCreature(creature);
-                        } finally {
-                            location1.getLock().unlock();
-                        }
                     }
                     if (direction == Direction.DOWN) {
-                        Location location1 = null;
                         location1 = island.getLocation(locationI + step, locationJ);
-                        if (location1 == null) {
-                            continue;
-                        }
-                        location1.getLock().lock();
-                        try {
-                            location1.addCreature(creature);
-                        } finally {
-                            location1.getLock().unlock();
-                        }
+                    }
+                    if (location1 == null) {
+                        continue;
+                    }
+                    location1.getLock().lock();
+                    try {
+                        location1.addCreature(creature);
+                    } finally {
+                        location1.getLock().unlock();
                     }
                 }
             }

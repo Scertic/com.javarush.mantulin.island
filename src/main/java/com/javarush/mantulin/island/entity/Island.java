@@ -32,7 +32,10 @@ public class Island {
             for (int j = 0; j < columnsCount; j++) {
                 this.locations[i][j] = new Location();
             }
+            System.out.print("\rСоздано " + (i*columnsCount) + " локаций");
         }
+        System.out.print("\rСоздано " + (rowsCount*columnsCount) + " локаций");
+        System.out.println();
     }
 
     /**
@@ -93,5 +96,8 @@ public class Island {
         return -1;
     }
 
+    public int getLocationCount() {
+        return rowsCount * columnsCount;
+    }
 
 }
