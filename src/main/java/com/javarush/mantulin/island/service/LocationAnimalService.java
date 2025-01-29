@@ -28,25 +28,14 @@ public class LocationAnimalService implements Runnable {
     private void simulateLifeCycle() {
         for (Creature creature : location.getCreaturesOnLocation()) {
             if (creature instanceof Animal animal) {
-                //проверяем на смерть
                 if (!animal.isAlive) {
-//                    location.getLock().lock();
-                    try {
                         location.removeCreature(animal);
-                    } finally {
-//                        location.getLock().unlock();
-                    }
                     continue;
                 }
                 //еда
                 Creature creatureToEat = location.findCreatureToEat(animal);
                 if (animal.eat(creatureToEat) != null) {
-//                    location.getLock().lock();
-                    try {
                         location.removeCreature(creatureToEat);
-                    } finally {
-//                        location.getLock().unlock();
-                    }
                 }
                 //размножение
                 if (location.getCreaturesOnLocation().stream()
@@ -54,14 +43,9 @@ public class LocationAnimalService implements Runnable {
                         .count() > 1) {
                     Creature reproduce = animal.reproduce();
                     if (reproduce != null) {
-//                        location.getLock().lock();
-                        try {
                             if (!location.addCreature(reproduce)) {
                                 reproduce = null;
                             }
-                        } finally {
-//                            location.getLock().unlock();
-                        }
                     }
                 }
                 //перемещение
@@ -84,7 +68,7 @@ public class LocationAnimalService implements Runnable {
                     if (direction == Direction.DOWN) {
                         location1 = island.getLocation(locationI + step, locationJ);
                     }
-                    if (location1 == null) {
+                    if (location1 == null || location1.equals(location)) {
                         continue;
                     }
 

@@ -11,8 +11,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Report {
     private final Island island;
-    public ReentrantLock reentrantLock = new ReentrantLock();
-
     public Report(Island island) {
         this.island = island;
     }

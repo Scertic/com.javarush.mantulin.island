@@ -33,7 +33,7 @@ public class Location {
                 return false;
             }
             long count = creaturesOnLocation.stream().filter(x -> x.getClass() == creature.getClass()).count();
-            if (Double.compare(count, getMaxNumberOfCreature(creature)) < 0) {
+            if (count < getMaxNumberOfCreature(creature)) {
                 creaturesOnLocation.add(creature);
                 return true;
             }

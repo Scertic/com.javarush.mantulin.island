@@ -27,12 +27,8 @@ public class Application {
 
         ReportService reportService = new ReportService(new IslandReport(island));
         ExecutorService executorService = Executors.newFixedThreadPool(8);
-        List<LocationAnimalService> locationAnimalServices = new ArrayList<>();
-        island.getLocations().parallelStream()
-                .forEach(x -> locationAnimalServices.add(new LocationAnimalService(island, x)));
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             List<Future<?>> futureList = new ArrayList<>();
-            //locationAnimalServices.forEach(x -> futureList.add(executorService.submit(x)));
             island.getLocations().forEach(x -> futureList.add(executorService.submit(new LocationAnimalService(island, x))));
             if (!futureList.isEmpty()) {
                 while (!futureList.get(futureList.size()-1).isDone()) {
