@@ -2,6 +2,9 @@ package com.javarush.mantulin.island.entity.creature;
 
 import com.javarush.mantulin.island.configuration.Settings;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -13,11 +16,23 @@ public abstract class Creature {
     private final String name;
     private final String ico;
 
+    public List<Class<? extends Creature>> getMyFavoriteCreatureToEat() {
+        return myFavoriteCreatureToEat;
+    }
+
+    protected List<Class<? extends Creature>> myFavoriteCreatureToEat;
+
 
     public Creature() {
         uniqueId++;
         this.name = this.getClass().getSimpleName()+uniqueId;
         this.ico = Settings.getInstance().getIcoMap().get(this.getClass());
+        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.getInstance().getChanceMap().get(this.getClass());
+        if (classIntegerMap == null || classIntegerMap.keySet().isEmpty()) {
+            myFavoriteCreatureToEat = new ArrayList<>();
+        } else {
+            myFavoriteCreatureToEat = new ArrayList<>(classIntegerMap.keySet());
+        }
     }
 
     @Override

@@ -109,19 +109,13 @@ public class Location {
      * @return - создание, которое может съесть создание из входного параметра
      */
     public Creature findCreatureToEat(Creature creature) {
-        List<Creature> creaturesNearby = getCreaturesOnLocation();
-        Map<Class<? extends Creature>, Integer> classIntegerMap = Settings.getInstance().getChanceMap().get(creature.getClass());
-        if (classIntegerMap == null) {
+        List<Class<? extends Creature>> myFavoriteCreatureToEat = creature.getMyFavoriteCreatureToEat();
+        if (myFavoriteCreatureToEat.isEmpty()) {
             return null;
         }
-        List<Class<? extends Creature>> myFavoriteCreature = new ArrayList<>(classIntegerMap.keySet());
-
-        if (myFavoriteCreature.isEmpty()) {
-            return null;
-        }
-        Collections.shuffle(myFavoriteCreature);
-        for (Creature creature1 : creaturesNearby) {
-            if (myFavoriteCreature.contains(creature1.getClass())) {
+//        Collections.shuffle(myFavoriteCreatureToEat);
+        for (Creature creature1 : getCreaturesOnLocation()) {
+            if (myFavoriteCreatureToEat.contains(creature1.getClass())) {
                 return creature1;
             }
         }
