@@ -8,6 +8,9 @@ import com.javarush.mantulin.island.entity.creature.plant.Plant;
 import com.javarush.mantulin.island.repository.CreatureFactory;
 import com.javarush.mantulin.island.util.Direction;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -19,6 +22,8 @@ public abstract class Animal extends Creature {
     public int satiety = 100;
     protected final double forFullSatiety; //Необходимое количнство пищи для получения полной сытости.
     public boolean isAlive = true;
+
+
 
     public Animal() {
         super();

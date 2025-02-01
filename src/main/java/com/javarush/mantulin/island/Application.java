@@ -20,21 +20,20 @@ public class Application {
         System.out.println("Время создания острова: " + (l1 - l));
         l = System.currentTimeMillis();
 
-
+        //Исполнитель для запуска роста растений
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         PlantService plantService = new PlantService(island);
         scheduledExecutorService.scheduleWithFixedDelay(plantService, 0, 1, TimeUnit.SECONDS);
 
         ReportService reportService = new ReportService(new IslandReport(island));
+        //Исполнитель для запуска жизненного цикла и вывода отчета
         ExecutorService executorService = Executors.newFixedThreadPool(8);
-        List<LocationAnimalService> locationAnimalServices = new ArrayList<>();
-        island.getLocations().parallelStream()
-                .forEach(x -> locationAnimalServices.add(new LocationAnimalService(island, x)));
         for (int i = 0; i < Settings.getInstance().getSimCount(); i++) {
             List<Future<?>> futureList = new ArrayList<>();
-            //locationAnimalServices.forEach(x -> futureList.add(executorService.submit(x)));
+            //Хапускаем таски и собираем фьючеры для отслеживания оконцания "дня" жизенного цикла
             island.getLocations().forEach(x -> futureList.add(executorService.submit(new LocationAnimalService(island, x))));
             if (!futureList.isEmpty()) {
+                //ожидание завершения последнего фьючера
                 while (!futureList.get(futureList.size()-1).isDone()) {
                     try {
                         long count = futureList.stream().filter(Future::isDone).count();
@@ -44,10 +43,12 @@ public class Application {
                         throw new RuntimeException(e);
                     }
                 }
+                //запуск таски отчета
                 executorService.submit(reportService);
             }
         }
 
+        //завершаем всё
         executorService.shutdown();
         while (!executorService.isTerminated()) {
             try {

@@ -14,13 +14,8 @@ public class ReportService implements Runnable{
 
     @Override
     public void run() {
-        report.reentrantLock.lock();
-        try {
             System.out.println("\rДень симуляции: " + day++);
             System.out.println("\r" + report.getReport());
-        } finally {
-            report.reentrantLock.unlock();
-        }
 
     }
 }
